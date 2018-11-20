@@ -1,0 +1,16 @@
+fr\gaminglab\service\impl\communication\ServiceMessage.class
+fr\gaminglab\service\impl\boutique\ServiceCommande.class
+fr\gaminglab\service\api\jeu\IServiceJeu.class
+fr\gaminglab\service\impl\jeu\ServiceEchange.class
+fr\gaminglab\service\impl\jeu\ServiceJeu.class
+fr\gaminglab\service\api\communication\IServiceMessage.class
+fr\gaminglab\service\impl\utilisateur\ServiceUtilisateur.class
+fr\gaminglab\service\impl\boutique\ServiceCatalogue.class
+fr\gaminglab\service\api\jeu\IServiceEchange.class
+fr\gaminglab\service\api\boutique\IServiceCatalogue.class
+fr\gaminglab\service\impl\communication\ServiceForum.class
+fr\gaminglab\service\api\utilisateur\IServiceCarteBancaire.class
+fr\gaminglab\service\impl\utilisateur\ServiceCarteBancaire.class
+fr\gaminglab\service\api\communication\IServiceForum.class
+fr\gaminglab\service\api\boutique\IServiceCommande.class
+fr\gaminglab\service\api\utilisateur\IServiceUtilisateur.class
