@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: gaminglab_entity
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: claramathieu
+Built-By: formation
 Implementation-Vendor-Id: fr.gaminglab
-Build-Jdk: 1.8.0_181
+Build-Jdk: 1.8.0_152
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/gaminglab_reactor/gaminglab_entity
 Created-By: Maven Integration for Eclipse
