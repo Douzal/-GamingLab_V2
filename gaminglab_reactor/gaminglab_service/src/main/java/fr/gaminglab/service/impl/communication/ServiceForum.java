@@ -68,8 +68,8 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public CommentaireForum ajouterCommentaire(CommentaireForum comForum, Joueur joueur) {
-        // TODO implement here
-        return null;
+        comForum.setJoueur(joueur);
+    	return daoCommentaireForum.save(comForum);       
     }
 
     /**
@@ -78,16 +78,15 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public SujetForum ajouterSujet(SujetForum sujet, Joueur joueur) {
-        // TODO implement here
-        return null;
+        sujet.setJoueur(joueur);
+    	return daoSujetForum.save(sujet);        
     }
 
     /**
      * @return
      */
     public List<CategorieForum> getAllCategorieForum() {
-        // TODO implement here
-        return null;
+        return daoCategorieForum.findAll(); 
     }
 
     /**
@@ -95,28 +94,31 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public List<CommentaireForum> getAllCommentaireBySujet(SujetForum sujet) {
-        // TODO implement here
-        return null;
+        return daoCommentaireForum.findBySujetForum(sujet); 
     }
-
+    //coucou
+    public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum) {
+        return daoCommentaireForum.findBySujetForumTest(idSujetForum); 
+    }
     /**
      * @param cat 
      * @return
      */
     public List<SujetForum> getAllSujetByCategorie(CategorieForum cat) {
-        // TODO implement here
-        return null;
+        return daoSujetForum.findByCategorieForum(cat); 
     }
 
     /**
      * @param jeu 
      * @return
      */
-    public List<SujetForum> getSujetByJeu(Jeu jeu) {
-        // TODO implement here
-        return null;
-    }
-
+     public List<SujetForum> getSujetByJoueur(Integer idJoueur) {
+        return daoSujetForum.findByJoueurIdUtilisateur(idJoueur);      	
+      }
+     
+      public List<SujetForum> getSujetByJeu(Jeu jeu) {
+    	  return null;     	
+      } 
     /**
      * @param libelle 
      * @return
@@ -159,7 +161,7 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public boolean supprimerCommentaire(CommentaireForum comForum) {
-        // TODO implement here
+        daoCommentaireForum.delete(comForum);
         return false;
     }
 
@@ -169,7 +171,8 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public boolean supprimerSujet(SujetForum sujet, Joueur joueur) {
-        // TODO implement here
+        sujet.setJoueur(joueur);
+    	daoSujetForum.delete(sujet);
         return false;
     }
 

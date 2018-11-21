@@ -1,12 +1,13 @@
 package fr.gaminglab.dao.api.communication;
 
-import fr.gaminglab.entity.communication.CategorieForum;
-import fr.gaminglab.entity.communication.SujetForum;
-import fr.gaminglab.entity.jeu.Jeu;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import fr.gaminglab.entity.communication.CategorieForum;
+import fr.gaminglab.entity.communication.SujetForum;
+import fr.gaminglab.entity.utilisateur.Joueur;
 
 /**
  * 
@@ -31,5 +32,10 @@ public interface IDaoSujetForum extends JpaRepository<SujetForum, Integer> {
      * @return
      */
     public List<SujetForum> findByJoueurIdUtilisateur(Integer idUtilisateur);
-
+    //coucou
+    /**
+     * @param jeu
+     * @return
+     */
+    //public List<SujetForum> findByJoueur(Joueur joueur);
 }

@@ -101,6 +101,11 @@ public interface IServiceForum {
 
     public List<CommentaireForum> getCommentaireForumByJoueur(Integer idUtilisateur);
 
-    public List<SujetForum> getSujetForumByJoueur(Integer idUtilisateur);
-
+    public List<SujetForum> getSujetForumByJoueur(Integer idUtilisateur);    
+                            
+    //coucou
+    public List<SujetForum> getSujetByJoueur(Integer idUtilisateur);
+    
+    //coucou test
+    public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum);
 }

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,6 +26,10 @@ import fr.gaminglab.entity.utilisateur.Joueur;
 @Entity
 @Table
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="idCommentaire", scope = CommentaireForum.class)
+//@NamedQuery(name="CommentaireForum.findBySujetForumTest",
+//            query="SELECT b FROM SujetForum b,CategorieForum c WHERE b.idCategorieForum=c.idCategorie and c.idCategorie=?2")
+@NamedQuery(name="CommentaireForum.findBySujetForumTest" , 
+            query="SELECT b FROM CategorieForum b WHERE b.idCategorie >= ?2")
 public class CommentaireForum implements Serializable {
 
     /**

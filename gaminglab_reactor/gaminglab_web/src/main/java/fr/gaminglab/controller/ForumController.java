@@ -6,6 +6,8 @@ import fr.gaminglab.entity.communication.SujetForum;
 import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.entity.utilisateur.Utilisateur;
 import fr.gaminglab.service.api.communication.IServiceForum;
+import fr.gaminglab.service.api.utilisateur.IServiceUtilisateur;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,29 @@ public class ForumController {
 
     @Autowired
     private IServiceForum serviceForum;
+    
+    @Autowired
+    private IServiceUtilisateur serviceUtilisateur;  
 
     @GetMapping("/categorie")
     List<CategorieForum> getAllCategorieForum(){
-
-        return null;
+    	return serviceForum.getAllCategorieForum();
     }
+    @GetMapping("/categorie/{idSujetForum}")
+    List<CommentaireForum> getAllCommentaireBySujet(@PathVariable Integer idSujetForum){
+    	
+    	Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
+    	
+        if(sujetForum.isPresent()) {
+        	System.out.println("coucou: PRESENT");
+    		//return serviceForum.getAllCommentaireBySujet(sujetForum.get());
+        	return serviceForum.getAllCommentaireBySujetTest(idSujetForum);
+    	} else {
+    		System.out.println("coucou: NO PRESENT");
+    		return null;
+    	}
+    }   
+   
 
     @GetMapping("/categorie/{idCategorieForum}")
     CategorieForum getCategorieForumById(@PathVariable Integer idCategorieForum){
@@ -38,9 +57,19 @@ public class ForumController {
 
     @GetMapping("/categorie/{idCategorieForum}/sujet")
     List<SujetForum> getAllSujetByCategorieForum (@PathVariable Integer idCategorieForum){
-
-        return null;
+    	Optional<CategorieForum> categorieForum = serviceForum.getCategorieForumById(idCategorieForum);
+    	if (categorieForum.isPresent()) {
+    		System.out.println("coucou: PRESENT");
+    		return serviceForum.getAllSujetByCategorie(categorieForum.get());
+    	}else {    	    	
+    		return null;   
+    	}
     }
+    // @GetMapping("/categories/{idJoueur}")
+    public List<SujetForum> getSujetForumByJoueur(@PathVariable Integer idJoueur) {
+    	//coucou
+    	return serviceForum.getSujetByJoueur(idJoueur);   
+	}
 
     @GetMapping("/sujet/{idSujet}")
     SujetForum getSujetById(@PathVariable Integer idSujet){
@@ -60,24 +89,45 @@ public class ForumController {
         return null;
     }
 
-    @PostMapping("/commentaire")
-    public void ajouterCommentaire(@RequestBody CommentaireForum commentaireForum){
-
+    @PostMapping("/commentaire/{idJoueur}")
+    public void ajouterCommentaire(@RequestBody CommentaireForum commentaireForum,@PathVariable Integer idJoueur){
+    	//coucou     	
+    	Optional<Joueur> joueurForum = serviceUtilisateur.getJoueurById(idJoueur);
+    	if (joueurForum.isPresent()) {
+    		CommentaireForum restJoueurForum = serviceForum.ajouterCommentaire(commentaireForum, joueurForum.get());    		
+    	}else {
+    	   System.out.println("Erreur ajouterCommentaire");
+    	}
+    	
     }
+    
 
-    @PostMapping("/sujet")
-    public void ajouterSujet(@RequestBody SujetForum sujet){
-
+    @PostMapping("/sujet/{idJoueur}")
+    public void ajouterSujet(@RequestBody SujetForum sujetForum,@PathVariable Integer idJoueur){
+    	//coucou
+    	Optional<Joueur> joueurForum = serviceUtilisateur.getJoueurById(idJoueur);
+    	if (joueurForum.isPresent()) {
+    		SujetForum restSujetForum = serviceForum.ajouterSujet(sujetForum, joueurForum.get());
+    	}
+    	else {
+    		System.out.println("Erreur ajouterSujet");
+    	}
+    	
     }
 
     @DeleteMapping("/commentaire/{idCommentaireForum}")
     public void supprimerCommentaire(@PathVariable Integer idCommentaireForum){
-
+    	//coucou  
+    	Optional<CommentaireForum> comForum = serviceForum.getCommentaireForumById(idCommentaireForum);
+    	if (comForum.isPresent()){
+    		boolean rest = serviceForum.supprimerCommentaire(comForum.get());
+    	}
     }
 
     @DeleteMapping("/sujet/{idSujetForum}")
     public void supprimerSujet(@PathVariable Integer idSujetForum){
-
+    	//coucou
+    	//Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
     }
 
     @PutMapping("/sujet/{idSujetForum}")
