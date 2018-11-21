@@ -174,7 +174,7 @@ public class ServiceForum implements IServiceForum {
         sujet.setJoueur(joueur);
     	daoSujetForum.delete(sujet);
         return false;
-    }
+    }   
 
     @Override
     public List<CommentaireForum> getCommentaireForumByJoueur(Integer idUtilisateur) {
