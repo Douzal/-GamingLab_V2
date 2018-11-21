@@ -31,19 +31,17 @@ public class ForumController {
 
     @GetMapping("/categorie")
     List<CategorieForum> getAllCategorieForum(){
+    	//Ok
     	return serviceForum.getAllCategorieForum();
     }
-    @GetMapping("/categorie/{idSujetForum}")
+    @GetMapping("/categorieSujet/{idSujetForum}")
     List<CommentaireForum> getAllCommentaireBySujet(@PathVariable Integer idSujetForum){
-    	
-    	Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
-    	
-        if(sujetForum.isPresent()) {
-        	System.out.println("coucou: PRESENT");
-    		//return serviceForum.getAllCommentaireBySujet(sujetForum.get());
-        	return serviceForum.getAllCommentaireBySujetTest(idSujetForum);
-    	} else {
-    		System.out.println("coucou: NO PRESENT");
+    	//ok
+    	Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);    	
+        if(sujetForum.isPresent()) {        	
+    		return serviceForum.getAllCommentaireBySujet(sujetForum.get());
+        	//return serviceForum.getAllCommentaireBySujetTest(idSujetForum);
+    	} else {    		
     		return null;
     	}
     }   
@@ -57,17 +55,17 @@ public class ForumController {
 
     @GetMapping("/categorie/{idCategorieForum}/sujet")
     List<SujetForum> getAllSujetByCategorieForum (@PathVariable Integer idCategorieForum){
+    	// ok
     	Optional<CategorieForum> categorieForum = serviceForum.getCategorieForumById(idCategorieForum);
-    	if (categorieForum.isPresent()) {
-    		System.out.println("coucou: PRESENT");
+    	if (categorieForum.isPresent()) {    		
     		return serviceForum.getAllSujetByCategorie(categorieForum.get());
     	}else {    	    	
     		return null;   
     	}
     }
-    // @GetMapping("/categories/{idJoueur}")
+    @GetMapping("/categorieJoueur/{idJoueur}")
     public List<SujetForum> getSujetForumByJoueur(@PathVariable Integer idJoueur) {
-    	//coucou
+    	//ok
     	return serviceForum.getSujetByJoueur(idJoueur);   
 	}
 
@@ -89,11 +87,12 @@ public class ForumController {
         return null;
     }
 
-    @PostMapping("/commentaire/{idJoueur}")
+    @PostMapping("/commentaireAjouter/{idJoueur}")
     public void ajouterCommentaire(@RequestBody CommentaireForum commentaireForum,@PathVariable Integer idJoueur){
     	//coucou     	
     	Optional<Joueur> joueurForum = serviceUtilisateur.getJoueurById(idJoueur);
     	if (joueurForum.isPresent()) {
+    		System.out.println("coucou :Present");
     		CommentaireForum restJoueurForum = serviceForum.ajouterCommentaire(commentaireForum, joueurForum.get());    		
     	}else {
     	   System.out.println("Erreur ajouterCommentaire");
@@ -102,7 +101,7 @@ public class ForumController {
     }
     
 
-    @PostMapping("/sujet/{idJoueur}")
+    @PostMapping("/sujetAjouter/{idJoueur}")
     public void ajouterSujet(@RequestBody SujetForum sujetForum,@PathVariable Integer idJoueur){
     	//coucou
     	Optional<Joueur> joueurForum = serviceUtilisateur.getJoueurById(idJoueur);
@@ -115,19 +114,32 @@ public class ForumController {
     	
     }
 
-    @DeleteMapping("/commentaire/{idCommentaireForum}")
+    @DeleteMapping("/commentaireSup/{idCommentaireForum}")
     public void supprimerCommentaire(@PathVariable Integer idCommentaireForum){
-    	//coucou  
-    	Optional<CommentaireForum> comForum = serviceForum.getCommentaireForumById(idCommentaireForum);
+    	// Ok
+    	Optional<CommentaireForum> comForum = serviceForum.getCommentaireForumById(idCommentaireForum);    	
     	if (comForum.isPresent()){
     		boolean rest = serviceForum.supprimerCommentaire(comForum.get());
     	}
+    	else {
+    		System.out.println("Erreur supprimer commentaire");
+    	}
     }
 
-    @DeleteMapping("/sujet/{idSujetForum}")
+    @DeleteMapping("/sujetSup/{idSujetForum}")
     public void supprimerSujet(@PathVariable Integer idSujetForum){
-    	//coucou
-    	//Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
+    	//coucou   ???
+//    	Optional<SujetForum> sujetForum = serviceForum..getSujetForumById(idSujetForum);
+//    	if (sujetForum.isPresent()) {
+//    		Optional<Joueur> joueurForum = serviceUtilisateur.getJoueurById(idSujetForum);
+//    		if(joueurForum.isPresent()) {
+//    			sujetForum = serviceForum.supprimerSujet(sujetForum, joueurForum);
+//    		}
+//    		else {
+//    			System.out.println("Present joueur");
+//    		}
+//    	}
+    	
     }
 
     @PutMapping("/sujet/{idSujetForum}")
