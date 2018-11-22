@@ -26,15 +26,15 @@ public interface IDaoSujetForum extends JpaRepository<SujetForum, Integer> {
      */
     public List<SujetForum> findTop5ByLibelleStartingWith(String libelle);
 
-    /**
-     * @param idUtilisateur
-     * @return
-     */
-    public List<SujetForum> findByJoueurIdUtilisateur(Integer idUtilisateur);
+//    /**
+//     * @param idUtilisateur
+//     * @return
+//     */
+//    public List<SujetForum> findByJoueurIdUtilisateur(Integer idUtilisateur);
     //coucou
     /**
      * @param jeu
      * @return
      */
-    public List<SujetForum> findByIdJoueur(Integer idJoueur);
+    public List<SujetForum> findByIdJoueurCreateur(Integer idJoueur);
 }

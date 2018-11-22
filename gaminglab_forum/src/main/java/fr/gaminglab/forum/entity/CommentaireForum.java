@@ -168,7 +168,7 @@ public class CommentaireForum implements Serializable {
 		return idJoueur;
 	}
 
-	public void setJoueur(Integer paramIdJoueur) {
+	public void setIdJoueur(Integer paramIdJoueur) {
 		idJoueur = paramIdJoueur;
 	}
 

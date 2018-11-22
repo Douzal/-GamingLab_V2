@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"fr.gaminglab.forum.dao"})
+@EnableJpaRepositories(basePackages = {"fr.gaminglab.forum.data"})
 @EntityScan(basePackages = {"fr.gaminglab.forum.entity"})
-@ComponentScan(basePackages= {"fr.gaminglab"})
+@ComponentScan(basePackages= {"fr.gaminglab.forum"})
 public class DemoApplication{
 
 	public static void main(String[] args) {
