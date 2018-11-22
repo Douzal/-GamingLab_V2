@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
+import fr.gaminglab.forum.entity.JoueurCommentaireForum;
 import fr.gaminglab.forum.entity.SujetForum;
 import fr.gaminglab.forum.service.IServiceForum;
 
@@ -92,7 +94,7 @@ public class ForumController {
 
 	@PostMapping("/commentaireAjouter/{idJoueur}")
 	public void ajouterCommentaire(@RequestBody CommentaireForum commentaireForum, @PathVariable Integer idJoueur) {
-		System.out.println("coucou :Present");
+//		System.out.println("coucou :Present");
 		CommentaireForum restJoueurForum = serviceForum.ajouterCommentaire(commentaireForum, idJoueur);
 	}
 
@@ -113,6 +115,8 @@ public class ForumController {
 		}
 	}
 
+	/*
+	 * methode deprecated (remplacee)
 	@PutMapping("/sujetNoter/{idSujetForum}/{idJoueur}")
 	public SujetForum noterSujet(@RequestBody SujetForum sujetForumModifie, @PathVariable Integer idSujetForum,
 			@PathVariable Integer idJoueur) {
@@ -128,7 +132,10 @@ public class ForumController {
 			return null;
 		}
 	}
+	*/
 
+	/*
+	 * methode deprecated (remplacee)
 	@PutMapping("/commentaireNoter/{idCommentaireForum}/{idJoueur}")
 	public CommentaireForum noterCommentaire(@RequestBody CommentaireForum commentaireForumModifie,
 			@PathVariable Integer idCommentaireForum, @PathVariable Integer idJoueur) {
@@ -140,10 +147,27 @@ public class ForumController {
 			return null;
 		}
 	}
+	*/
 
-	@GetMapping("/sujets")
-	List<SujetForum> getAllSujetForum() {
-		return serviceForum.getAllSujetForum();
+	@GetMapping("/joueurCommentaireForum/{idUtilisateur}/{idCommentaire}/")
+	@ResponseBody
+	List<JoueurCommentaireForum> getJoueurCommentaireForum(@PathVariable Integer idUtilisateur,
+														   @PathVariable Integer idCommentaire) {
+		/*
+		 * SELECT * FROM JoueurCommentaireForum WHERE IdJoueur = idJoueur AND idComm = idComm 
+		 */
+		
+		// get JoueurCommentaireForumByIdJoueurCommentaire (Integer idUtilisateur,
+		// Integer idCommentaire) {}
+		/* A JARTER mais pour idee
+		 * Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
+		if (sujetForum.isPresent()) {
+			return serviceForum.getAllCommentaireBySujet(sujetForum.get());
+			// return serviceForum.getAllCommentaireBySujetTest(idSujetForum);
+		} else {
+			return null;
+		}*/
+		return null;
 	}
 
 }
