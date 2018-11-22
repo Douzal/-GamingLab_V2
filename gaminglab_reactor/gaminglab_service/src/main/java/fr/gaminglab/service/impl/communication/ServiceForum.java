@@ -1,9 +1,12 @@
 package fr.gaminglab.service.impl.communication;
 
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import fr.gaminglab.entity.communication.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,8 +156,8 @@ public class ServiceForum implements IServiceForum {
         joueurSujetForum.setSujetForum(sujet);
         joueurSujetForum.setDateNote(new Date());
         daoJoueurSujet.save(joueurSujetForum);
-        return daoSujetForum.save(sujet);
-    }
+        return daoSujetForum.save(sujet);    	
+    }  
 
     /**
      * @param comForum 
@@ -171,8 +174,8 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public boolean supprimerSujet(SujetForum sujet, Joueur joueur) {
-        sujet.setJoueur(joueur);
-    	daoSujetForum.delete(sujet);
+        //sujet.setJoueur(joueur);
+    	//daoSujetForum.delete(sujet);
         return false;
     }   
 
@@ -184,5 +187,12 @@ public class ServiceForum implements IServiceForum {
     @Override
     public List<SujetForum> getSujetForumByJoueur(Integer idUtilisateur) {
         return daoSujetForum.findByJoueurIdUtilisateur(idUtilisateur);
+    }
+    
+    public List<SujetForum> getAllSujetForum() {    	
+    	List<SujetForum> listes = daoSujetForum.findAll();       	
+    	return (List<SujetForum>)listes.stream()    	
+    	    	.sorted((p1, p2) -> (p1.getNote().compareTo(p2.getNote())))
+    	    	.collect(Collectors.toList());    	
     }
 }

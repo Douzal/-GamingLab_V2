@@ -2,6 +2,7 @@ package fr.gaminglab.service.api.communication;
 
 import fr.gaminglab.entity.communication.CategorieForum;
 import fr.gaminglab.entity.communication.CommentaireForum;
+import fr.gaminglab.entity.communication.JoueurSujetForum;
 import fr.gaminglab.entity.communication.SujetForum;
 import fr.gaminglab.entity.jeu.Jeu;
 import fr.gaminglab.entity.utilisateur.Joueur;
@@ -108,4 +109,5 @@ public interface IServiceForum {
     
     //coucou test
     public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum);
+    public List<SujetForum> getAllSujetForum();
 }

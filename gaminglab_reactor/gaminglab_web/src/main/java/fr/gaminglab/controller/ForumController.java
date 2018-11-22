@@ -124,43 +124,40 @@ public class ForumController {
     	else {
     		System.out.println("Erreur supprimer commentaire");
     	}
-    }
+    }  
 
-    @DeleteMapping("/sujetSup/{idSujetForum}")
-    public void supprimerSujet(@PathVariable Integer idSujetForum){
-    	//coucou   ???
-//    	Optional<SujetForum> sujetForum = serviceForum..getSujetForumById(idSujetForum);
-//    	if (sujetForum.isPresent()) {
-//    		Optional<Joueur> joueurForum = serviceUtilisateur.getJoueurById(idSujetForum);
-//    		if(joueurForum.isPresent()) {
-//    			sujetForum = serviceForum.supprimerSujet(sujetForum, joueurForum);
-//    		}
-//    		else {
-//    			System.out.println("Present joueur");
-//    		}
-//    	}
-    	
-    }
-
-    @PutMapping("/sujet/{idSujetForum}")
-    public SujetForum noterSujet(@PathVariable Integer idSujetForum, @RequestBody SujetForum sujetForumModifie,@RequestBody Joueur joueur){
-        Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
-        if (sujetForum.isPresent()){
-            sujetForum.get().setNote(sujetForumModifie.getNote());
-            return serviceForum.noteSujet(sujetForum.get(), joueur);
-        } else {
-            return null;
+    @PutMapping("/sujetNoter/{idSujetForum}/{idJoueur}")
+    public SujetForum noterSujet(@RequestBody SujetForum sujetForumModifie, @PathVariable Integer idSujetForum, @PathVariable Integer idJoueur){
+        
+    	Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
+        Optional<Joueur> joueur = serviceUtilisateur.getJoueurById(idJoueur);
+        
+        if (sujetForum.isPresent() && joueur.isPresent()) {
+        	
+        	sujetForum.get().setNote(sujetForumModifie.getNote());
+        	     	
+        	return serviceForum.noteSujet(sujetForum.get(), joueur.get());
         }
+        else {
+        	return null;
+        }        
     }
 
-    @PutMapping("/commentaire/{idCommentaireForum}")
-    public CommentaireForum noterCommentaire(@PathVariable Integer idCommentaireForum,@RequestBody CommentaireForum commentaireForumModifie,@RequestBody Joueur joueur){
-        Optional<CommentaireForum> commentaireForum = serviceForum.getCommentaireForumById(idCommentaireForum);
-        if (commentaireForum.isPresent()){
-            commentaireForum.get().setNote(commentaireForumModifie.getNote());
-            return serviceForum.noteCommentaire(commentaireForum.get(), joueur);
-        } else {
-            return null;
-        }
+    @PutMapping("/commentaireNoter/{idCommentaireForum}/{idJoueur}")
+    public CommentaireForum noterCommentaire(@RequestBody CommentaireForum commentaireForumModifie,@PathVariable Integer idCommentaireForum, @PathVariable Integer idJoueur) {
+    	Optional<Joueur>joueur = serviceUtilisateur.getJoueurById(idJoueur);
+    	Optional<CommentaireForum> commentaireForum = serviceForum.getCommentaireForumById(idCommentaireForum);
+    	if(commentaireForum.isPresent() && joueur.isPresent()) {
+    		commentaireForum.get().setNote(commentaireForumModifie.getNote());
+    		return serviceForum.noteCommentaire(commentaireForum.get(), joueur.get());
+    	}else {
+    		return null;
+    	}
     }
+    
+    @GetMapping("/sujets")
+    List<SujetForum> getAllSujetForum(){
+    	return serviceForum.getAllSujetForum();
+    }
+    
 }
