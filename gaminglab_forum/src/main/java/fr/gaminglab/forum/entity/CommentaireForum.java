@@ -27,6 +27,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="idCommentaire", scope = CommentaireForum.class)
+@NamedQuery(name="CommentaireForum.findByIdCommentaireAndCommentaireSupQuery",
+            query="SELECT b FROM CommentaireForum b WHERE b.idCommentaire=?1 And b.idCommentaire=b.commentaireSup")
 public class CommentaireForum implements Serializable {
 
     /**

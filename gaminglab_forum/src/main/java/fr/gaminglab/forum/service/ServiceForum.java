@@ -246,7 +246,11 @@ public class ServiceForum implements IServiceForum {
     {
     	Optional<SujetForum> sujetForum = daoSujetForum.findById(idSujet);
     	if(sujetForum.isPresent()) {
-    		return daoCommentaireForum.findBySujetForumAndCommentaireSupNotNull(sujetForum.get());   		
+    		//return daoCommentaireForum.findBySujetForumAndCommentaireSupNull(sujetForum.get());   
+    		List<CommentaireForum> listes = daoCommentaireForum.findBySujetForumAndCommentaireSupNull(sujetForum.get());   
+    		return (List<CommentaireForum>)listes.stream()    	
+        	    	.sorted((p1, p2) -> (p1.getVote().compareTo(p2.getVote())))
+        	    	.collect(Collectors.toList());  
     	}else
     	{
     		System.out.println("Not present idSujetForm");
@@ -255,8 +259,14 @@ public class ServiceForum implements IServiceForum {
     }
     @Override
     public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire)
-    {
-    	return daoCommentaireForum.findByIdCommentaireAndCommentaireSupNull(idCommentaire);    	
+    {//.sorted((p1, p2) -> (p1.getVote().compareTo(p2.getVote())))
+    	
+    	
+    	
+    	List<CommentaireForum> listes = daoCommentaireForum.findByIdCommentaireAndCommentaireSupQuery(idCommentaire);
+    	return (List<CommentaireForum>)listes.stream()    	
+    			.sorted((p1, p2) -> (p1.getVote().compareTo(p2.getVote())))
+    	    	.collect(Collectors.toList());  
     }
 
     
