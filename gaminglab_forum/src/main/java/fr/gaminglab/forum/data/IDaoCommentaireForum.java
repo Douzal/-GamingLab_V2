@@ -23,7 +23,7 @@ public interface IDaoCommentaireForum extends JpaRepository<CommentaireForum, In
 
     public List<CommentaireForum> findByIdJoueur(Integer idUtilisateur);
     
-    //coucou
-    public List<CommentaireForum> findBySujetForumTest(Integer idSujetForum);
-
+    public List<CommentaireForum> findBySujetForumAndCommentaireSupNotNull(SujetForum sujet);
+    public List<CommentaireForum> findByIdCommentaireAndCommentaireSupNull(Integer commentaire);
+  
 }

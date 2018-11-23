@@ -98,10 +98,10 @@ public class ServiceForum implements IServiceForum {
     public List<CommentaireForum> getAllCommentaireBySujet(SujetForum sujet) {
         return daoCommentaireForum.findBySujetForum(sujet); 
     }
-    //coucou
-    public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum) {
-        return daoCommentaireForum.findBySujetForumTest(idSujetForum); 
-    }
+    //coucou  a supprimer
+//    public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum) {
+//        return daoCommentaireForum.findBySujetForumTest(idSujetForum); 
+//    }
     /**
      * @param cat 
      * @return
@@ -136,28 +136,28 @@ public class ServiceForum implements IServiceForum {
      * @param joueur 
      * @return
      */
-    public CommentaireForum noteCommentaire(CommentaireForum comForum, Integer idJoueur) {
-        JoueurCommentaireForum joueurCommentaireForum = new JoueurCommentaireForum();
-        joueurCommentaireForum.setIdJoueur(idJoueur);
-        joueurCommentaireForum.setCommentaireForum(comForum);
-        joueurCommentaireForum.setDateNote(new Date());
-        daoJoueurCommentaireForum.save(joueurCommentaireForum);
-        return daoCommentaireForum.save(comForum);
-    }
+//2311    public CommentaireForum noteCommentaire(CommentaireForum comForum, Integer idJoueur) {
+//        JoueurCommentaireForum joueurCommentaireForum = new JoueurCommentaireForum();
+//        joueurCommentaireForum.setIdJoueur(idJoueur);
+//        joueurCommentaireForum.setCommentaireForum(comForum);
+//        joueurCommentaireForum.setDateNote(new Date());
+//        daoJoueurCommentaireForum.save(joueurCommentaireForum);
+//        return daoCommentaireForum.save(comForum);
+//    }
 
     /**
      * @param sujet 
      * @param joueur 
      * @return
      */
-    public SujetForum noteSujet(SujetForum sujet, Integer idJoueur) {
-        JoueurSujetForum joueurSujetForum = new JoueurSujetForum();
-        joueurSujetForum.setIdJoueur(idJoueur);
-        joueurSujetForum.setSujetForum(sujet);
-        joueurSujetForum.setDateNote(new Date());
-        daoJoueurSujet.save(joueurSujetForum);
-        return daoSujetForum.save(sujet);    	
-    }  
+//2311    public SujetForum noteSujet(SujetForum sujet, Integer idJoueur) {
+//        JoueurSujetForum joueurSujetForum = new JoueurSujetForum();
+//        joueurSujetForum.setIdJoueur(idJoueur);
+//        joueurSujetForum.setSujetForum(sujet);
+//        joueurSujetForum.setDateNote(new Date());
+//        daoJoueurSujet.save(joueurSujetForum);
+//        return daoSujetForum.save(sujet);    	
+//    }  
 
     /**
      * @param comForum 
@@ -240,7 +240,24 @@ public class ServiceForum implements IServiceForum {
     		daoSujetForum.save(sujetObjet);
     	} else {System.out.println("Not present idSujetForm");}    	
     }
-   
+    
+    @Override
+    public List<CommentaireForum> getAllCommentairesForumParent(Integer idSujet)
+    {
+    	Optional<SujetForum> sujetForum = daoSujetForum.findById(idSujet);
+    	if(sujetForum.isPresent()) {
+    		return daoCommentaireForum.findBySujetForumAndCommentaireSupNotNull(sujetForum.get());   		
+    	}else
+    	{
+    		System.out.println("Not present idSujetForm");
+    	}
+    	return null;
+    }
+    @Override
+    public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire)
+    {
+    	return daoCommentaireForum.findByIdCommentaireAndCommentaireSupNull(idCommentaire);    	
+    }
 
     
 }

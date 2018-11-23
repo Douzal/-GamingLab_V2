@@ -77,14 +77,14 @@ public interface IServiceForum {
 	 * @param joueur
 	 * @return
 	 */
-	public CommentaireForum noteCommentaire(CommentaireForum comForum, Integer idJoueur);
+	//2311 public CommentaireForum noteCommentaire(CommentaireForum comForum, Integer idJoueur);
 
 	/**
 	 * @param sujet
 	 * @param joueur
 	 * @return
 	 */
-	public SujetForum noteSujet(SujetForum sujet, Integer idJoueur);
+	//2311 public SujetForum noteSujet(SujetForum sujet, Integer idJoueur);
 
 	/**
 	 * @param comForum
@@ -104,14 +104,13 @@ public interface IServiceForum {
 	public List<SujetForum> getSujetForumByJoueur(Integer idUtilisateur);
 
 	// coucou
-	public List<SujetForum> getSujetByJoueur(Integer idUtilisateur);
-
-	// coucou test
-	public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum);
+	public List<SujetForum> getSujetByJoueur(Integer idUtilisateur);	
 
 	public List<SujetForum> getAllSujetForum();
 	
 	public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet);
 	public void ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum);
 	public void majNoteSujetForum(JoueurSujetForum joueurSujetForum);
+	public List<CommentaireForum> getAllCommentairesForumParent(Integer idSujet);
+	public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire);
 }
