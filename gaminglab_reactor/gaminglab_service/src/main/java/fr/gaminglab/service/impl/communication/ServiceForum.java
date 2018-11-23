@@ -1,14 +1,14 @@
 package fr.gaminglab.service.impl.communication;
 
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import fr.gaminglab.entity.communication.*;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,14 @@ import fr.gaminglab.dao.api.communication.IDaoCommentaireForum;
 import fr.gaminglab.dao.api.communication.IDaoJoueurCommentaireForum;
 import fr.gaminglab.dao.api.communication.IDaoJoueurSujet;
 import fr.gaminglab.dao.api.communication.IDaoSujetForum;
+import fr.gaminglab.entity.communication.CategorieForum;
+import fr.gaminglab.entity.communication.CommentaireForum;
+import fr.gaminglab.entity.communication.JoueurCommentaireForum;
+import fr.gaminglab.entity.communication.JoueurSujetForum;
+import fr.gaminglab.entity.communication.SujetForum;
 import fr.gaminglab.entity.jeu.Jeu;
 import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.service.api.communication.IServiceForum;
-
-import javax.transaction.Transactional;
 
 /**
  * 
@@ -101,7 +104,7 @@ public class ServiceForum implements IServiceForum {
     }
     //coucou
     public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum) {
-        return daoCommentaireForum.findBySujetForumTest(idSujetForum); 
+        return new ArrayList(); 
     }
     /**
      * @param cat 

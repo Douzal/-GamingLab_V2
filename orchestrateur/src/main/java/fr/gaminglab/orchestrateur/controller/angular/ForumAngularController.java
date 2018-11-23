@@ -20,7 +20,7 @@ import fr.gaminglab.forum.entity.JoueurSujetForum;
 import fr.gaminglab.forum.entity.SujetForum;
 import fr.gaminglab.orchestrateur.controller.java.ForumWebService;
 
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/gaminglab/forum")
 public class ForumAngularController {

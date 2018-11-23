@@ -24,7 +24,7 @@ import fr.gaminglab.forum.entity.JoueurCommentaireForum;
 import fr.gaminglab.forum.entity.SujetForum;
 import fr.gaminglab.forum.service.IServiceForum;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8182")
 @RestController
 @RequestMapping("/gaminglab/forum")
 public class ForumController {

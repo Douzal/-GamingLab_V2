@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.service.api.utilisateur.IServiceUtilisateur;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8182")
 @RestController
 @RequestMapping("/gaminglab")
 public class UtilisateurController {
