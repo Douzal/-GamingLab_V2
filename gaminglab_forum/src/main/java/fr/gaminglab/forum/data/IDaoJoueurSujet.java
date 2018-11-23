@@ -21,6 +21,7 @@ public interface IDaoJoueurSujet extends JpaRepository<JoueurSujetForum, Integer
      */
     public boolean existsByIdJoueur(Integer idJoueur);
     
-    public List<JoueurSujetForum> findByIdJoueurAndSujetForum(Integer joueur, SujetForum sujetForum); 
+    //Modif Chris
+    public JoueurSujetForum findByIdJoueurAndSujetForum(Integer joueur, SujetForum sujetForum); 
 
 }

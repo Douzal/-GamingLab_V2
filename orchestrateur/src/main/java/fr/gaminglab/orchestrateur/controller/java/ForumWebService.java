@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +18,9 @@ import fr.gaminglab.forum.entity.JoueurSujetForum;
 
 public class ForumWebService {
 
+	private static final String COMMENTAIRES_ENFANT = "/commentaires_enfant";
+	private static final String COMMENTAIRES_PARENT = "/commentaires_parent";
+	private static final String SUJETS = "/sujets";
 	private static final String MAJ_JOUEUR_SUJET_FORUM = "/majjoueursujetforum";
 	private static final String AJOUTER_JOUEUR_SUJET_FORUM = "/ajouterjoueursujetforum";
 	private static final String JOUEUR_SUJET_FORUM = "/joueursujetforum";
@@ -182,6 +187,7 @@ public class ForumWebService {
 		return Arrays.asList(joueurCommentaireForums);
 	}
 
+	//Modif Chris
 	/**
 	 * GET URL = /gaminglab/forum/joueursujetforum/{idUtilisateur}/{idCommentaire}/
 	 * 
@@ -189,10 +195,9 @@ public class ForumWebService {
 	 * @param idCommentaire
 	 * @return
 	 */
-	public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet) {
-		JoueurSujetForum[] joueurSujetForums = restTemplate.getForObject(
-				base_url + JOUEUR_SUJET_FORUM + SLASH + idUtilisateur + SLASH + idSujet, JoueurSujetForum[].class);
-		return Arrays.asList(joueurSujetForums);
+	public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet) {
+		
+		return restTemplate.getForObject(base_url + JOUEUR_SUJET_FORUM + SLASH + idUtilisateur + SLASH + idSujet, JoueurSujetForum.class);
 	}
 
 	/**
@@ -249,7 +254,25 @@ public class ForumWebService {
 		return restTemplate.postForObject(base_url+AJOUTER_JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
 	}
 	
-	public void majNoteJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
+	public void majNoteJoueurSujetForum( JoueurSujetForum joueurSujetForum) {
 		restTemplate.put(base_url+MAJ_JOUEUR_SUJET_FORUM, joueurSujetForum,JoueurSujetForum.class);
 	}
+	
+	public List<SujetForum> getAllSujet() {
+		SujetForum[] allSujets = restTemplate.getForObject(base_url+SUJETS, SujetForum[].class);
+		return Arrays.asList(allSujets);
+	}
+	
+	//Ajout Chris
+	public List<CommentaireForum> getAllCommentairesForumParent(Integer idSujet) {
+		CommentaireForum[] allCommParent = restTemplate.getForObject(base_url+ COMMENTAIRES_PARENT + SLASH + idSujet, CommentaireForum[].class);
+		return Arrays.asList(allCommParent);
+	}
+	
+	//Ajout Chris
+	public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire) {
+		CommentaireForum[] allCommEnfant = restTemplate.getForObject(base_url+ COMMENTAIRES_ENFANT + SLASH + idCommentaire, CommentaireForum[].class);
+		return Arrays.asList(allCommEnfant);
+	}
+	
 }

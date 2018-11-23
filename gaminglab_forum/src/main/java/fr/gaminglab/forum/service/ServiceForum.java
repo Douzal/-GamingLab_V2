@@ -197,8 +197,9 @@ public class ServiceForum implements IServiceForum {
     	    	.collect(Collectors.toList());    	
     }    
     
+    //Modif Chris
     @Override
-    public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet){    	
+    public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet){    	
     	Optional<SujetForum> sujetForum = daoSujetForum.findById(idSujet);
     	if(sujetForum.isPresent()) {
     		return daoJoueurSujet.findByIdJoueurAndSujetForum(idUtilisateur, sujetForum.get());
@@ -208,8 +209,9 @@ public class ServiceForum implements IServiceForum {
     	}    		
     }
     
+    //Modif Chris
     @Override
-    public void ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum) {     	   
+    public JoueurSujetForum ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum) {     	   
     	Integer voteJoueurSujetForum = joueurSujetForum.getVote();
     	Integer idSujetForum = joueurSujetForum.getSujetForum().getIdSujet();       	
     	Integer noteSujetForm = joueurSujetForum.getSujetForum().getNote();    	
@@ -222,7 +224,10 @@ public class ServiceForum implements IServiceForum {
     		noteSujetForm = noteSujetForm + voteJoueurSujetForum;    			 		
     		sujetObjet.setNote(noteSujetForm);    		
     		daoSujetForum.save(sujetObjet);    		
-    	}else {System.out.println("Not present idSujetForm");	} 	          	
+    	} else {
+    		System.out.println("Not present idSujetForm");	
+    	} 
+    	return joueurSujetForum;
     }  
     
     @Override
@@ -249,13 +254,14 @@ public class ServiceForum implements IServiceForum {
     		//return daoCommentaireForum.findBySujetForumAndCommentaireSupNull(sujetForum.get());   
     		List<CommentaireForum> listes = daoCommentaireForum.findBySujetForumAndCommentaireSupNull(sujetForum.get());   
     		return (List<CommentaireForum>)listes.stream()    	
-        	    	.sorted((p1, p2) -> (p1.getVote().compareTo(p2.getVote())))
+        	    	.sorted((p1, p2) -> (p1.getNote().compareTo(p2.getNote())))
         	    	.collect(Collectors.toList());  
     	}else
     	{
     		System.out.println("Not present idSujetForm");
+    		return null;
     	}
-    	return null;
+    	
     }
     @Override
     public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire)
@@ -265,9 +271,63 @@ public class ServiceForum implements IServiceForum {
     	
     	List<CommentaireForum> listes = daoCommentaireForum.findByIdCommentaireAndCommentaireSupQuery(idCommentaire);
     	return (List<CommentaireForum>)listes.stream()    	
-    			.sorted((p1, p2) -> (p1.getVote().compareTo(p2.getVote())))
+    			.sorted((p1, p2) -> (p1.getNote().compareTo(p2.getNote())))
     	    	.collect(Collectors.toList());  
     }
+
+    //Ajout Chris
+	@Override
+	public JoueurCommentaireForum getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire) {
+		Optional<CommentaireForum> commentaireForum = daoCommentaireForum.findById(idCommentaire);
+		JoueurCommentaireForum joueurCommentaireForum = new JoueurCommentaireForum();
+    	if(commentaireForum.isPresent()) {
+    		joueurCommentaireForum = daoJoueurCommentaireForum.findByIdJoueurAndCommentaireForum(idUtilisateur, commentaireForum.get());
+    	}else {
+    		System.out.println("Erreur getJoueurSujetCommentaireByIdJoueurCommentaire");
+    	}
+    	return joueurCommentaireForum;
+	}
+
+	//Ajout Chris
+	@Override
+	public JoueurCommentaireForum insertJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
+		Integer voteJoueurCommentaireForum = joueurCommentaireForum.getVote();
+    	Integer idCommentaireForum = joueurCommentaireForum.getCommentaireForum().getIdCommentaire();       	
+    	Integer noteCommentaireForm = joueurCommentaireForum.getCommentaireForum().getNote();    	
+    	daoJoueurCommentaireForum.save(joueurCommentaireForum);   
+    	
+    	Optional<CommentaireForum> commentaireForum = daoCommentaireForum.findById(idCommentaireForum);
+    	if(commentaireForum.isPresent())     		
+    	{  
+    		CommentaireForum commentaireObjet = daoCommentaireForum.getOne(idCommentaireForum);    		
+    		noteCommentaireForm = noteCommentaireForm + voteJoueurCommentaireForum;    			 		
+    		commentaireObjet.setNote(noteCommentaireForm);    		
+    		daoCommentaireForum.save(commentaireObjet);    		
+    	} else {
+    		System.out.println("Not present idCommentaireForm");	
+    	} 
+    	
+    	return joueurCommentaireForum;
+	}
+
+	//Ajout Chris
+	@Override
+	public void updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
+		Integer voteJoueurCommentaireForum = joueurCommentaireForum.getVote();    	
+    	Integer idCommentaireForum = joueurCommentaireForum.getCommentaireForum().getIdCommentaire();    	
+    	daoJoueurCommentaireForum.save(joueurCommentaireForum);   
+    	
+    	Optional<CommentaireForum> commentaireForum = daoCommentaireForum.findById(idCommentaireForum);
+    	if(commentaireForum.isPresent()) {
+    		CommentaireForum commentaireObjet = daoCommentaireForum.getOne(idCommentaireForum);
+    		Integer noteCommentaireForm = commentaireObjet.getNote();    	
+    		noteCommentaireForm = noteCommentaireForm + voteJoueurCommentaireForum;    		
+    		commentaireObjet.setNote(noteCommentaireForm);	
+    		daoCommentaireForum.save(commentaireObjet);
+    	} else {
+    		System.out.println("Not present idCommentaireForm");
+		}    	
+	}
 
     
 }
