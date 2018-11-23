@@ -37,10 +37,10 @@ public class CommentaireForum implements Serializable {
     public CommentaireForum() {
     }
 
-    public CommentaireForum(String contenu, Date dateEmission, Integer vote, SujetForum sujetForum, CommentaireForum commentaireSup, Integer idjoueur) {
+    public CommentaireForum(String contenu, Date dateEmission, Integer note, SujetForum sujetForum, CommentaireForum commentaireSup, Integer idjoueur) {
         this.contenu = contenu;
         this.dateEmission = dateEmission;
-        this.vote = vote;
+        this.note = note;
         this.sujetForum = sujetForum;
         this.commentaireSup = commentaireSup;
         this.idJoueur = idjoueur;
@@ -70,7 +70,7 @@ public class CommentaireForum implements Serializable {
      * 
      */
     @Column(nullable = false)
-    private Integer vote;
+    private Integer note;
 
     /**
      * 
@@ -130,12 +130,12 @@ public class CommentaireForum implements Serializable {
 		dateEmission = paramDateEmission;
 	}
 
-	public Integer getVote() {
-		return vote;
+	public Integer getNote() {
+		return note;
 	}
 
-	public void setNote(Integer paramVote) {
-		vote = paramVote;
+	public void setNote(Integer paramNote) {
+		note = paramNote;
 	}
 
 	public SujetForum getSujetForum() {

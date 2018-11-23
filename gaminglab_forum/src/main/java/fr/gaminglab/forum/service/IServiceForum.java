@@ -3,9 +3,11 @@ package fr.gaminglab.forum.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.PathVariable;
 
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
+import fr.gaminglab.forum.entity.JoueurCommentaireForum;
 import fr.gaminglab.forum.entity.JoueurSujetForum;
 import fr.gaminglab.forum.entity.SujetForum;
 
@@ -108,9 +110,16 @@ public interface IServiceForum {
 
 	public List<SujetForum> getAllSujetForum();
 	
-	public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet);
-	public void ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum);
+	//Modif Chris
+	public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet);
+	//Modif Chris
+	public JoueurSujetForum ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum);
 	public void majNoteSujetForum(JoueurSujetForum joueurSujetForum);
 	public List<CommentaireForum> getAllCommentairesForumParent(Integer idSujet);
 	public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire);
+	
+	//Ajouts Chris
+	public JoueurCommentaireForum getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire);
+	public JoueurCommentaireForum insertJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
+	public void updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
 }

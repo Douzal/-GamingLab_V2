@@ -77,7 +77,12 @@ public class ForumController {
 
 	@GetMapping("/sujet/{idSujet}")
 	SujetForum getSujetById(@PathVariable Integer idSujet) {
-		return null;
+		return serviceForum.getSujetForumById(idSujet).get();
+	}
+	
+	@GetMapping("/sujets")
+	List<SujetForum> getAllSujet() {
+		return serviceForum.getAllSujetForum();
 	}
 
 	@GetMapping("/sujet/{idSujetForum}/commentaire")
@@ -145,36 +150,17 @@ public class ForumController {
 		}
 	}
 	*/
-
-	@GetMapping("/joueurcommentaireforum/{idUtilisateur}/{idCommentaire}/")
-	@ResponseBody
-	List<JoueurCommentaireForum> getJoueurCommentaireForum(@PathVariable Integer idUtilisateur,
-														   @PathVariable Integer idCommentaire) {
-		/*
-		 * SELECT * FROM JoueurCommentaireForum WHERE IdJoueur = idJoueur AND idComm = idComm 
-		 */
-		
-		// get JoueurCommentaireForumByIdJoueurCommentaire (Integer idUtilisateur,
-		// Integer idCommentaire) {}
-		/* A JARTER mais pour idee
-		 * Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
-		if (sujetForum.isPresent()) {
-			return serviceForum.getAllCommentaireBySujet(sujetForum.get());
-			// return serviceForum.getAllCommentaireBySujetTest(idSujetForum);
-		} else {
-			return null;
-		}*/
-		return null;
-	}
 	
+	//Modif Chris
 	@GetMapping("/joueursujetforum/{idUtilisateur}/{idSujet}")
-    public List<JoueurSujetForum>getJoueurSujetForumByIdJoueurSujet(@PathVariable Integer idUtilisateur,@PathVariable Integer idSujet){
+    public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(@PathVariable Integer idUtilisateur,@PathVariable Integer idSujet){
     	return serviceForum.getJoueurSujetForumByIdJoueurSujet(idUtilisateur, idSujet);
     }
 	
+	//Modif Chris
 	@PostMapping("/ajouterjoueursujetforum")
-	public void ajouterJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
-		serviceForum.ajouterJoueurSujetForum(joueurSujetForum);
+	public JoueurSujetForum ajouterJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
+		return serviceForum.ajouterJoueurSujetForum(joueurSujetForum);
 	}
 	
 	@PutMapping("/majjoueursujetforum")
@@ -190,5 +176,39 @@ public class ForumController {
 	@GetMapping("/commentaires_enfant/{idCommentaire}") 
 	public List<CommentaireForum>getAllCommentairesForumEnfant(@PathVariable Integer idCommentaire){
 		return serviceForum.getAllCommentairesForumEnfant(idCommentaire);
+	}
+	
+	//Modif Chris
+	@GetMapping("/joueurcommentaireforum/{idUtilisateur}/{idCommentaire}/")
+	//@ResponseBody
+	public JoueurCommentaireForum getJoueurCommentaireForum(@PathVariable Integer idUtilisateur,
+														   @PathVariable Integer idCommentaire) {
+		/*
+		 * SELECT * FROM JoueurCommentaireForum WHERE IdJoueur = idJoueur AND idComm = idComm 
+		 */
+		
+		// get JoueurCommentaireForumByIdJoueurCommentaire (Integer idUtilisateur,
+		// Integer idCommentaire) {}
+		/* A JARTER mais pour idee
+		 * Optional<SujetForum> sujetForum = serviceForum.getSujetForumById(idSujetForum);
+		if (sujetForum.isPresent()) {
+			return serviceForum.getAllCommentaireBySujet(sujetForum.get());
+			// return serviceForum.getAllCommentaireBySujetTest(idSujetForum);
+		} else {
+			return null;
+		}*/
+		return serviceForum.getJoueurCommentaireForum(idUtilisateur, idCommentaire);
+	}
+	
+	//Ajout Chris
+	@PostMapping("/joueurcommentaireforum")
+	public JoueurCommentaireForum insertJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
+		return serviceForum.insertJoueurCommentaireForum(joueurCommentaireForum);
+	}
+	
+	//Ajout Chris
+	@PutMapping("/joueurcommentaireforum")
+	public void updateJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
+		serviceForum.updateJoueurCommentaireForum(joueurCommentaireForum);
 	}
 }

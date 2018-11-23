@@ -3,6 +3,7 @@ package fr.gaminglab.forum.data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import fr.gaminglab.forum.entity.CommentaireForum;
 import fr.gaminglab.forum.entity.JoueurCommentaireForum;
 
 
@@ -17,5 +18,8 @@ public interface IDaoJoueurCommentaireForum extends JpaRepository<JoueurCommenta
      * @return
      */
     public boolean existsByIdJoueur(Integer idJoueur);
+    
+    //Ajout Chris
+    public JoueurCommentaireForum findByIdJoueurAndCommentaireForum(Integer joueur, CommentaireForum commentaireForum);
 
 }
