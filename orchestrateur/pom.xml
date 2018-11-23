@@ -20,6 +20,11 @@
 		</dependency>
 		<dependency>
 			<groupId>fr.gaminglab</groupId>
+			<artifactId>gaminglab_forum</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.gaminglab</groupId>
 			<artifactId>gaminglab_web</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

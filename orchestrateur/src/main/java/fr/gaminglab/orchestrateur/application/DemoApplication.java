@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@EntityScan(basePackages = {"fr.gaminglab.entity"})
+@EntityScan(basePackages = {"fr.gaminglab.entity","fr.gaminglab.forum.entity"})
 @ComponentScan(basePackages= {"fr.gaminglab.orchestrateur"})
 public class DemoApplication{
 
