@@ -37,4 +37,5 @@ public interface IDaoSujetForum extends JpaRepository<SujetForum, Integer> {
      * @return
      */
     public List<SujetForum> findByIdJoueurCreateur(Integer idJoueur);
+    
 }

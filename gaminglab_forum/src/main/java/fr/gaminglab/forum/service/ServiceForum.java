@@ -28,7 +28,7 @@ import fr.gaminglab.forum.entity.SujetForum;
 @Service
 @Transactional
 public class ServiceForum implements IServiceForum {
-
+		
     public ServiceForum() {
     }
 
@@ -189,10 +189,58 @@ public class ServiceForum implements IServiceForum {
         return daoSujetForum.findByIdJoueurCreateur(idUtilisateur);
     }
     
+    @Override
     public List<SujetForum> getAllSujetForum() {    	
     	List<SujetForum> listes = daoSujetForum.findAll();       	
     	return (List<SujetForum>)listes.stream()    	
     	    	.sorted((p1, p2) -> (p1.getNote().compareTo(p2.getNote())))
     	    	.collect(Collectors.toList());    	
+    }    
+    
+    @Override
+    public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet){    	
+    	Optional<SujetForum> sujetForum = daoSujetForum.findById(idSujet);
+    	if(sujetForum.isPresent()) {
+    		return daoJoueurSujet.findByIdJoueurAndSujetForum(idUtilisateur, sujetForum.get());
+    	}else {
+    		System.out.println("Erreur getJoueurSujetForumByIdJoueurSujet");
+    		return null;
+    	}    		
     }
+    
+    @Override
+    public void ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum) {     	   
+    	Integer voteJoueurSujetForum = joueurSujetForum.getVote();
+    	Integer idSujetForum = joueurSujetForum.getSujetForum().getIdSujet();       	
+    	Integer noteSujetForm = joueurSujetForum.getSujetForum().getNote();    	
+    	//Alimenter la ligne de JoueurSujetForm
+    	daoJoueurSujet.save(joueurSujetForum);     
+    	Optional<SujetForum> sujetForum = daoSujetForum.findById(idSujetForum);
+    	if(sujetForum.isPresent())     		
+    	{  
+    		SujetForum sujetObjet = daoSujetForum.getOne(idSujetForum);    		
+    		noteSujetForm = noteSujetForm + voteJoueurSujetForum;    			 		
+    		sujetObjet.setNote(noteSujetForm);    		
+    		daoSujetForum.save(sujetObjet);    		
+    	}else {System.out.println("Not present idSujetForm");	} 	          	
+    }  
+    
+    @Override
+    public void majNoteSujetForum(JoueurSujetForum joueurSujetForum) {    	  	
+    	Integer voteJoueurSujetForum = joueurSujetForum.getVote();    	
+    	Integer idSujetForum = joueurSujetForum.getSujetForum().getIdSujet();    	
+    	//update joueurSujetForum
+    	daoJoueurSujet.save(joueurSujetForum);    	
+    	Optional<SujetForum> sujetForum = daoSujetForum.findById(idSujetForum);
+    	if(sujetForum.isPresent()) {
+    		SujetForum sujetObjet = daoSujetForum.getOne(idSujetForum);
+    		Integer noteSujetForm = sujetObjet.getNote();    	
+    		noteSujetForm = noteSujetForm + voteJoueurSujetForum;    		
+    		sujetObjet.setNote(noteSujetForm);	
+    		daoSujetForum.save(sujetObjet);
+    	} else {System.out.println("Not present idSujetForm");}    	
+    }
+   
+
+    
 }

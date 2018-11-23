@@ -47,8 +47,8 @@ public class ServiceForum implements IServiceForum {
 
     @Autowired
     private IDaoCommentaireForum daoCommentaireForum;
-
-
+    
+  
 
     @Override
     public Optional<CategorieForum> getCategorieForumById(Integer id) {
@@ -189,10 +189,23 @@ public class ServiceForum implements IServiceForum {
         return daoSujetForum.findByJoueurIdUtilisateur(idUtilisateur);
     }
     
+    @Override
     public List<SujetForum> getAllSujetForum() {    	
     	List<SujetForum> listes = daoSujetForum.findAll();       	
     	return (List<SujetForum>)listes.stream()    	
     	    	.sorted((p1, p2) -> (p1.getNote().compareTo(p2.getNote())))
     	    	.collect(Collectors.toList());    	
     }
+    @Override
+    public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet){
+    	//sup List<JoueurSujetForum> liste = daoJoueurSujet.findByJoueurAndSujetForum(idUtilisateur, idSujet);
+    	return daoJoueurSujet.findByJoueurAndSujetForum(idUtilisateur, idSujet);
+    }
+    
+//    @Override
+//    public void ajouterJoueurSujetForm() {
+//    	
+//    }
+    
+    
 }

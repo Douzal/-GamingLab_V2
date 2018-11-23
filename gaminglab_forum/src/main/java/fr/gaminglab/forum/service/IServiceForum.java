@@ -3,8 +3,10 @@ package fr.gaminglab.forum.service;
 import java.util.List;
 import java.util.Optional;
 
+
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
+import fr.gaminglab.forum.entity.JoueurSujetForum;
 import fr.gaminglab.forum.entity.SujetForum;
 
 /**
@@ -108,4 +110,8 @@ public interface IServiceForum {
 	public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum);
 
 	public List<SujetForum> getAllSujetForum();
+	
+	public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet);
+	public void ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum);
+	public void majNoteSujetForum(JoueurSujetForum joueurSujetForum);
 }

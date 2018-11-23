@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.gaminglab.forum.data.IDaoJoueurSujet;
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
+import fr.gaminglab.forum.entity.JoueurSujetForum;
 import fr.gaminglab.forum.entity.SujetForum;
 import fr.gaminglab.forum.service.IServiceForum;
 
@@ -29,7 +31,8 @@ public class ForumController {
 	public static final Logger logger = LoggerFactory.getLogger(ForumController.class);
 
 	@Autowired
-	private IServiceForum serviceForum;
+	private IServiceForum serviceForum;	
+	
 
 	@GetMapping("/categorie")
 	List<CategorieForum> getAllCategorieForum() {
@@ -144,6 +147,21 @@ public class ForumController {
 	@GetMapping("/sujets")
 	List<SujetForum> getAllSujetForum() {
 		return serviceForum.getAllSujetForum();
+	}
+	
+	@GetMapping("/joueurSujetForum/{idUtilisateur}/{idSujet}")
+    public List<JoueurSujetForum>getJoueurSujetForumByIdJoueurSujet(@PathVariable Integer idUtilisateur,@PathVariable Integer idSujet){
+    	return serviceForum.getJoueurSujetForumByIdJoueurSujet(idUtilisateur, idSujet);
+    }
+	
+	@PostMapping("/ajouterJoueurSujetForum")
+	public void ajouterJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
+		serviceForum.ajouterJoueurSujetForum(joueurSujetForum);
+	}
+	
+	@PutMapping("/majJoueurSujetForum")
+	public void majNoteJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
+		serviceForum.majNoteSujetForum(joueurSujetForum);
 	}
 
 }

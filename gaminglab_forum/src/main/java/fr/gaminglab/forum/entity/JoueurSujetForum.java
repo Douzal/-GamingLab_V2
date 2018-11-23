@@ -26,6 +26,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class JoueurSujetForum implements Serializable {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Default constructor
      */
     public JoueurSujetForum() {

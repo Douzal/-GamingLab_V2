@@ -110,4 +110,5 @@ public interface IServiceForum {
     //coucou test
     public List<CommentaireForum> getAllCommentaireBySujetTest(Integer idSujetForum);
     public List<SujetForum> getAllSujetForum();
+    public List<JoueurSujetForum> getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet);
 }

@@ -2,6 +2,7 @@ package fr.gaminglab.controller;
 
 import fr.gaminglab.entity.communication.CategorieForum;
 import fr.gaminglab.entity.communication.CommentaireForum;
+import fr.gaminglab.entity.communication.JoueurSujetForum;
 import fr.gaminglab.entity.communication.SujetForum;
 import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.entity.utilisateur.Utilisateur;
@@ -158,6 +159,11 @@ public class ForumController {
     @GetMapping("/sujets")
     List<SujetForum> getAllSujetForum(){
     	return serviceForum.getAllSujetForum();
+    }
+    
+    @GetMapping("/joueurSujetForum/{idUtilisateur}/{idSujet}")
+    public List<JoueurSujetForum>getJoueurSujetForumByIdJoueurSujet(@PathVariable Integer idUtilisateur,@PathVariable Integer idSujet){
+    	return serviceForum.getJoueurSujetForumByIdJoueurSujet(idUtilisateur, idSujet);
     }
     
 }
