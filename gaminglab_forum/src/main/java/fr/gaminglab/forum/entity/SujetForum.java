@@ -80,6 +80,7 @@ public class SujetForum implements Serializable {
      * 
      */
     @OneToMany(mappedBy="sujetForum")
+    @JsonIgnore
     private Set<CommentaireForum> commentairesForum;
 
     /**

@@ -1,6 +1,7 @@
 package fr.gaminglab.forum.entity;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
@@ -26,85 +28,85 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  */
 @Entity
 @Table
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="idCommentaire", scope = CommentaireForum.class)
-@NamedQuery(name="CommentaireForum.findByIdCommentaireAndCommentaireSupQuery",
-            query="SELECT b FROM CommentaireForum b WHERE b.idCommentaire=?1 And b.idCommentaire=b.commentaireSup")
-public class CommentaireForum implements Serializable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCommentaire", scope = CommentaireForum.class)
+@NamedQuery(name = "CommentaireForum.findByIdCommentaireAndCommentaireSupQuery", query = "SELECT b FROM CommentaireForum b WHERE b.idCommentaire=?1 And b.idCommentaire=b.commentaireSup")
+public class CommentaireForum implements Serializable, Comparable<CommentaireForum> {
 
-    /**
-     * Default constructor
-     */
-    public CommentaireForum() {
-    }
+	/**
+	 * Default constructor
+	 */
+	public CommentaireForum() {
+	}
 
-    public CommentaireForum(String contenu, Date dateEmission, Integer note, SujetForum sujetForum, CommentaireForum commentaireSup, Integer idjoueur) {
-        this.contenu = contenu;
-        this.dateEmission = dateEmission;
-        this.note = note;
-        this.sujetForum = sujetForum;
-        this.commentaireSup = commentaireSup;
-        this.idJoueur = idjoueur;
-    }
+	public CommentaireForum(String contenu, Date dateEmission, Integer note, SujetForum sujetForum,
+			CommentaireForum commentaireSup, Integer idjoueur) {
+		this.contenu = contenu;
+		this.dateEmission = dateEmission;
+		this.note = note;
+		this.sujetForum = sujetForum;
+		this.commentaireSup = commentaireSup;
+		this.idJoueur = idjoueur;
+	}
 
-    /**
-     * 
-     */
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer idCommentaire;
+	/**
+	 * 
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer idCommentaire;
 
-    /**
-     * 
-     */
-    @Column(nullable = false, length = 255)
-    private String contenu;
+	/**
+	 * 
+	 */
+	@Column(nullable = false, length = 255)
+	private String contenu;
 
-    /**
-     * 
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date dateEmission;
+	/**
+	 * 
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
+	private Date dateEmission;
 
-    /**
-     * 
-     */
-    @Column(nullable = false)
-    private Integer note;
+	/**
+	 * 
+	 */
+	@Column(nullable = false)
+	private Integer note;
 
-    /**
-     * 
-     */
-    @ManyToOne
-    @JoinColumn(name="idSujetForum", nullable = false)
+	/**
+	 * 
+	 */
+	@ManyToOne
+	@JoinColumn(name = "idSujetForum", nullable = false)
 	private SujetForum sujetForum;
 
-    /**
-     * 
-     */
-    @OneToMany(mappedBy="commentaireSup")
+	/**
+	 * 
+	 */
+	@OneToMany(mappedBy = "commentaireSup")
 	@JsonIgnore
-    private Set<CommentaireForum> commentairesInf;
+	private Set<CommentaireForum> commentairesInf;
 
-    /**
-     * 
-     */
-    @ManyToOne
-    @JoinColumn(name="idCommentaireSup")
-    private CommentaireForum commentaireSup;
+	/**
+	 * 
+	 */
+	@ManyToOne
+	@JoinColumn(name = "idCommentaireSup")
+	private CommentaireForum commentaireSup;
 
-    /**
-     *
-     */
-    @Column(name="idJoueurCreateur", nullable = false)
-    private Integer idJoueur;
+	/**
+	 *
+	 */
+	@Column(name = "idJoueurCreateur", nullable = false)
+	private Integer idJoueur;
 
-    /**
-     * 
-     */
-    @OneToMany(mappedBy="commentaireForum")
+	/**
+	 * 
+	 */
+	@OneToMany(mappedBy = "commentaireForum")
 	@JsonIgnore
-    private Set<JoueurCommentaireForum> joueursCommentaireForum;
+	private Set<JoueurCommentaireForum> joueursCommentaireForum;
 
 	public Integer getIdCommentaire() {
 		return idCommentaire;
@@ -178,5 +180,24 @@ public class CommentaireForum implements Serializable {
 		joueursCommentaireForum = paramJoueursCommentaireForum;
 	}
 
-    
+	@Override
+	public int compareTo(CommentaireForum commentaireForum1) {
+		Integer compare = 0;
+		Integer noteThis = this.getNote();
+		Integer noteCompare = commentaireForum1.getNote();
+		if (noteThis != null && noteCompare != null) {
+			compare = noteThis.compareTo(noteCompare);
+			if (compare == 0) {
+				Date dateEmissionThis = this.getDateEmission();
+				Date dateEmissionCompare = commentaireForum1.getDateEmission();
+				if (dateEmissionThis != null && dateEmissionCompare != null) {
+					compare = dateEmissionThis.compareTo(dateEmissionCompare);
+				}
+
+			}
+		}
+
+		return compare;
+	}
+
 }

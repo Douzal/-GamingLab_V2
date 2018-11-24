@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
-import fr.gaminglab.forum.entity.JoueurSujetForum;
 import fr.gaminglab.forum.entity.JoueurCommentaireForum;
+import fr.gaminglab.forum.entity.JoueurSujetForum;
 import fr.gaminglab.forum.entity.SujetForum;
 import fr.gaminglab.forum.service.IServiceForum;
+import fr.gaminglab.forum.service.ServiceForum;
 
 @CrossOrigin(origins = "http://localhost:8182")
 @RestController
@@ -170,7 +170,8 @@ public class ForumController {
 
 	@GetMapping("/commentaires_parent/{idSujet}") 
 	public List<CommentaireForum>getAllCommentairesForumParent(@PathVariable Integer idSujet){
-		return serviceForum.getAllCommentairesForumParent(idSujet);
+		List<CommentaireForum> allCommentairesForumParent = serviceForum.getAllCommentairesForumParent(idSujet);
+		return allCommentairesForumParent;
 	}
 	
 	@GetMapping("/commentaires_enfant/{idCommentaire}") 
