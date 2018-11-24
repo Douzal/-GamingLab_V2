@@ -1,20 +1,23 @@
 package fr.gaminglab.orchestrateur.controller.java;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
+import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
 import fr.gaminglab.forum.entity.JoueurCommentaireForum;
-import fr.gaminglab.forum.entity.SujetForum;
 import fr.gaminglab.forum.entity.JoueurSujetForum;
+import fr.gaminglab.forum.entity.SujetForum;
+import fr.gaminglab.orchestrateur.dto.CommentaireForumDto;
+import fr.gaminglab.orchestrateur.dto.JoueurCommentaireForumDto;
+import fr.gaminglab.orchestrateur.dto.JoueurSujetForumDto;
+import fr.gaminglab.orchestrateur.dto.SujetForumDto;
 
 public class ForumWebService {
 
@@ -35,7 +38,8 @@ public class ForumWebService {
 	private static final String CATEGORIE = "/categorie";
 	private static final String CATEGORIE_SUJET = "/categoriesujet";
 	private RestTemplate restTemplate;
-	private String base_url = null;
+	private String base_url_forum = null;
+	private UtilisateurWebService wsUtilisateur = new UtilisateurWebService();
 
 	public ForumWebService() {
 		restTemplate = new RestTemplate();
@@ -45,8 +49,9 @@ public class ForumWebService {
 					.getResourceAsStream("ws_java_forum.properties");
 			props.load(is);
 			is.close();
-			this.base_url = props.getProperty("ws_java_forum.base_url");
-			System.out.println("ForumJavaController -> base_url=" + base_url);
+			this.base_url_forum = props.getProperty("ws_java_forum.base_url");
+			System.out.println("ForumJavaController -> base_url_forum=" + base_url_forum);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,7 +63,7 @@ public class ForumWebService {
 	 * @return
 	 */
 	public List<CategorieForum> getAllCategorieForum() {
-		CategorieForum[] categorieForums = restTemplate.getForObject(base_url + CATEGORIE, CategorieForum[].class);
+		CategorieForum[] categorieForums = restTemplate.getForObject(base_url_forum + CATEGORIE, CategorieForum[].class);
 		return Arrays.asList(categorieForums);
 	}
 
@@ -68,10 +73,13 @@ public class ForumWebService {
 	 * @param idSujetForum
 	 * @return
 	 */
-	public List<CommentaireForum> getAllCommentaireBySujet(Integer idSujetForum) {
+	public List<CommentaireForumDto> getAllCommentaireBySujet(Integer idSujetForum) {
 		CommentaireForum[] commentaireForums = restTemplate
-				.getForObject(base_url + CATEGORIE_SUJET + SLASH + idSujetForum, CommentaireForum[].class);
-		return Arrays.asList(commentaireForums);
+				.getForObject(base_url_forum + CATEGORIE_SUJET + SLASH + idSujetForum, CommentaireForum[].class);
+		//coucou
+		List<CommentaireForum> listAllCommentaireBySujet = Arrays.asList(commentaireForums);
+		List<CommentaireForumDto>  listAllCommentaireBySujetDto = remplirListCommentaireForumDto(listAllCommentaireBySujet);
+		return listAllCommentaireBySujetDto;
 	}
 
 	/**
@@ -81,7 +89,7 @@ public class ForumWebService {
 	 * @return
 	 */
 	public CategorieForum getCategorieForumById(Integer idCategorieForum) {
-		return restTemplate.getForObject(base_url + CATEGORIE + SLASH + idCategorieForum, CategorieForum.class);
+		return restTemplate.getForObject(base_url_forum + CATEGORIE + SLASH + idCategorieForum, CategorieForum.class);
 	}
 
 	/**
@@ -90,10 +98,13 @@ public class ForumWebService {
 	 * @param idCategorieForum
 	 * @return
 	 */
-	public List<SujetForum> getAllSujetByCategorieForum(Integer idCategorieForum) {
-		SujetForum[] sujetForums = restTemplate.getForObject(base_url + CATEGORIE + SLASH + idCategorieForum + SUJET,
+	public List<SujetForumDto> getAllSujetByCategorieForum(Integer idCategorieForum) {
+		SujetForum[] sujetForums = restTemplate.getForObject(base_url_forum + CATEGORIE + SLASH + idCategorieForum + SUJET,
 				SujetForum[].class);
-		return Arrays.asList(sujetForums);
+		//coucou
+		List<SujetForum> listAllSujetByCategorie = Arrays.asList(sujetForums);
+		List<SujetForumDto> listAllSujetByCategorieDto = remplirListSujetForumDto(listAllSujetByCategorie);
+		return listAllSujetByCategorieDto;
 	}
 
 	/**
@@ -102,10 +113,13 @@ public class ForumWebService {
 	 * @param idJoueur
 	 * @return
 	 */
-	public List<SujetForum> getSujetForumByJoueur(Integer idJoueur) {
-		SujetForum[] sujetForums = restTemplate.getForObject(base_url + CATEGORIE_JOUEUR + SLASH + idJoueur,
+	public List<SujetForumDto> getSujetForumByJoueur(Integer idJoueur) {
+		SujetForum[] sujetForums = restTemplate.getForObject(base_url_forum + CATEGORIE_JOUEUR + SLASH + idJoueur,
 				SujetForum[].class);
-		return Arrays.asList(sujetForums);
+		//coucou
+		List<SujetForum> listSujetForumByJoueur = Arrays.asList(sujetForums);
+		List<SujetForumDto> listSujetForumByJoueurDto = remplirListSujetForumDto(listSujetForumByJoueur);
+		return 	listSujetForumByJoueurDto;
 	}
 
 	/**
@@ -114,8 +128,15 @@ public class ForumWebService {
 	 * @param idSujet
 	 * @return
 	 */
-	public SujetForum getSujetById(Integer idSujet) {
-		return restTemplate.getForObject(base_url + SUJET + SLASH + idSujet, SujetForum.class);
+	public SujetForumDto getSujetForumDtoById(Integer idSujet) {
+		SujetForum sujetForum = getSujetForumById(idSujet);
+		SujetForumDto sujetForumDto = remplirSujetForumDto(sujetForum);
+		return sujetForumDto;
+	}
+
+	public SujetForum getSujetForumById(Integer idSujet) {
+		SujetForum sujetForum = restTemplate.getForObject(base_url_forum + SUJET + SLASH + idSujet, SujetForum.class);
+		return sujetForum;
 	}
 
 	/**
@@ -124,10 +145,13 @@ public class ForumWebService {
 	 * @param idSujetForum
 	 * @return
 	 */
-	public List<CommentaireForum> getAllCommentaireForumBySujet(Integer idSujetForum) {
+	public List<CommentaireForumDto> getAllCommentaireForumBySujet(Integer idSujetForum) {
 		CommentaireForum[] commentaireForums = restTemplate
-				.getForObject(base_url + SUJET + SLASH + idSujetForum + COMMENTAIRE, CommentaireForum[].class);
-		return Arrays.asList(commentaireForums);
+				.getForObject(base_url_forum + SUJET + SLASH + idSujetForum + COMMENTAIRE, CommentaireForum[].class);
+		//coucou
+		List<CommentaireForum> listAllCommentaireForumBySujet = Arrays.asList(commentaireForums);
+		List<CommentaireForumDto> listAllCommentaireForumBySujetDto = remplirListCommentaireForumDto(listAllCommentaireForumBySujet);
+		return listAllCommentaireForumBySujetDto;
 	}
 
 	/**
@@ -136,8 +160,15 @@ public class ForumWebService {
 	 * @param idCommentaire
 	 * @return
 	 */
+	public CommentaireForumDto getCommentaireForumDtoById(Integer idCommentaire) {
+		CommentaireForum commentaireForum = getCommentaireForumById(idCommentaire);
+		CommentaireForumDto commentaireForumDto = remplirCommentaireForumDto(commentaireForum);
+		return commentaireForumDto;
+	}
+
 	public CommentaireForum getCommentaireForumById(Integer idCommentaire) {
-		return restTemplate.getForObject(base_url + COMMENTAIRE + SLASH + idCommentaire, CommentaireForum.class);
+		CommentaireForum commentaireForum = restTemplate.getForObject(base_url_forum + COMMENTAIRE + SLASH + idCommentaire, CommentaireForum.class);
+		return commentaireForum;
 	}
 
 	/**
@@ -148,7 +179,7 @@ public class ForumWebService {
 	 * @return
 	 */
 	public CommentaireForum ajouterCommentaire(CommentaireForum commentaireForum, Integer idJoueur) {
-		return restTemplate.postForObject(base_url + COMMENTAIRE_AJOUTER + SLASH + idJoueur, commentaireForum,
+		return restTemplate.postForObject(base_url_forum + COMMENTAIRE_AJOUTER + SLASH + idJoueur, commentaireForum,
 				CommentaireForum.class);
 	}
 
@@ -160,7 +191,7 @@ public class ForumWebService {
 	 * @return
 	 */
 	public SujetForum ajouterSujet(SujetForum sujetForum, Integer idJoueur) {
-		return restTemplate.postForObject(base_url + SUJET_AJOUTER + SLASH + idJoueur, sujetForum, SujetForum.class);
+		return restTemplate.postForObject(base_url_forum + SUJET_AJOUTER + SLASH + idJoueur, sujetForum, SujetForum.class);
 	}
 
 	/**
@@ -169,7 +200,7 @@ public class ForumWebService {
 	 * @param idCommentaireForum
 	 */
 	public void supprimerCommentaire(Integer idCommentaireForum) {
-		restTemplate.delete(base_url + COMMENTAIRE_SUP + SLASH + idCommentaireForum);
+		restTemplate.delete(base_url_forum + COMMENTAIRE_SUP + SLASH + idCommentaireForum);
 	}
 
 	/**
@@ -182,9 +213,10 @@ public class ForumWebService {
 	 */
 	public List<JoueurCommentaireForum> getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire) {
 		JoueurCommentaireForum[] joueurCommentaireForums = restTemplate.getForObject(
-				base_url + JOUEUR_COMMENTAIRE_FORUM + SLASH + idUtilisateur + SLASH + idCommentaire,
+				base_url_forum + JOUEUR_COMMENTAIRE_FORUM + SLASH + idUtilisateur + SLASH + idCommentaire,
 				JoueurCommentaireForum[].class);
-		return Arrays.asList(joueurCommentaireForums);
+		List<JoueurCommentaireForum> listJoueurCommentaires = Arrays.asList(joueurCommentaireForums);
+		return listJoueurCommentaires;		
 	}
 
 	//Modif Chris
@@ -197,7 +229,8 @@ public class ForumWebService {
 	 */
 	public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet) {
 		
-		return restTemplate.getForObject(base_url + JOUEUR_SUJET_FORUM + SLASH + idUtilisateur + SLASH + idSujet, JoueurSujetForum.class);
+		JoueurSujetForum joueurSujetForum = restTemplate.getForObject(base_url_forum + JOUEUR_SUJET_FORUM + SLASH + idUtilisateur + SLASH + idSujet, JoueurSujetForum.class);
+		return joueurSujetForum;
 	}
 
 	/**
@@ -207,7 +240,7 @@ public class ForumWebService {
 	 * @return
 	 */
 	public JoueurSujetForum insertJoueurSujetForum(JoueurSujetForum joueurSujetForum) {
-		return restTemplate.postForObject(base_url + JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
+		return restTemplate.postForObject(base_url_forum + JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
 	}
 
 	/**
@@ -216,7 +249,7 @@ public class ForumWebService {
 	 * @param joueurSujetForum
 	 */
 	public void updateJoueurSujetForum(JoueurSujetForum joueurSujetForum) {
-		restTemplate.put(base_url + JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
+		restTemplate.put(base_url_forum + JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
 	}
 
 	/**
@@ -227,8 +260,9 @@ public class ForumWebService {
 	 */
 	public JoueurCommentaireForum getJoueurCommentaireForumByIdJoueurCommentaire(Integer idJoueur,
 			Integer idCommentaire) {
-		return restTemplate.getForObject(base_url + JOUEUR_COMMENTAIRE_FORUM + SLASH + idJoueur + SLASH + idCommentaire,
-				JoueurCommentaireForum.class);
+		JoueurCommentaireForum joueurCommentaireForum = restTemplate.getForObject(base_url_forum + JOUEUR_COMMENTAIRE_FORUM + SLASH + idJoueur + SLASH + idCommentaire,
+						JoueurCommentaireForum.class);
+		return joueurCommentaireForum;
 	}
 	
 	/**
@@ -238,41 +272,122 @@ public class ForumWebService {
 	 * @return
 	 */
 	public JoueurCommentaireForum insertJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
-		return restTemplate.postForObject(base_url + JOUEUR_COMMENTAIRE_FORUM, joueurCommentaireForum, JoueurCommentaireForum.class);
+		return restTemplate.postForObject(base_url_forum + JOUEUR_COMMENTAIRE_FORUM, joueurCommentaireForum, JoueurCommentaireForum.class);
 	}
 
 	/**
-	 * PUT URL = /gaminglab/forum/joueurcommentaireforum
+	 * POST URL = /gaminglab/forum/joueurcommentaireforum
 	 * 
 	 * @param joueurSujetForum
 	 */
-	public void updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
-		restTemplate.put(base_url + JOUEUR_COMMENTAIRE_FORUM, joueurCommentaireForum, joueurCommentaireForum, JoueurCommentaireForum.class);
+	public JoueurCommentaireForum updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
+		return restTemplate.postForObject(base_url_forum + JOUEUR_COMMENTAIRE_FORUM, joueurCommentaireForum, JoueurCommentaireForum.class);
 	}
 	
 	public JoueurSujetForum ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum) {
-		return restTemplate.postForObject(base_url+AJOUTER_JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
+		return restTemplate.postForObject(base_url_forum+AJOUTER_JOUEUR_SUJET_FORUM, joueurSujetForum, JoueurSujetForum.class);
 	}
 	
-	public void majNoteJoueurSujetForum( JoueurSujetForum joueurSujetForum) {
-		restTemplate.put(base_url+MAJ_JOUEUR_SUJET_FORUM, joueurSujetForum,JoueurSujetForum.class);
+	public JoueurSujetForum majNoteJoueurSujetForum( JoueurSujetForum joueurSujetForum) {
+		return restTemplate.postForObject(base_url_forum+MAJ_JOUEUR_SUJET_FORUM, joueurSujetForum,JoueurSujetForum.class);
 	}
 	
-	public List<SujetForum> getAllSujet() {
-		SujetForum[] allSujets = restTemplate.getForObject(base_url+SUJETS, SujetForum[].class);
-		return Arrays.asList(allSujets);
+	public List<SujetForumDto> getAllSujet() {
+		SujetForum[] allSujets = restTemplate.getForObject(base_url_forum+SUJETS, SujetForum[].class);
+		List<SujetForum> listAllSujets = Arrays.asList(allSujets);
+		List<SujetForumDto> listAllSujetsDto = remplirListSujetForumDto(listAllSujets);
+		return listAllSujetsDto;
 	}
+
+	//Ajout Chris
+	public List<CommentaireForumDto> getAllCommentairesForumParent(Integer idSujet) {
+		CommentaireForum[] allCommParent = restTemplate.getForObject(base_url_forum+ COMMENTAIRES_PARENT + SLASH + idSujet, CommentaireForum[].class);
+		List<CommentaireForum> listAllCommentaires = Arrays.asList(allCommParent);
+		List<CommentaireForumDto> listAllCommentaireDto = remplirListCommentaireForumDto(listAllCommentaires);		
+		return listAllCommentaireDto;
+	}
+	
 	
 	//Ajout Chris
-	public List<CommentaireForum> getAllCommentairesForumParent(Integer idSujet) {
-		CommentaireForum[] allCommParent = restTemplate.getForObject(base_url+ COMMENTAIRES_PARENT + SLASH + idSujet, CommentaireForum[].class);
-		return Arrays.asList(allCommParent);
+	public List<CommentaireForumDto> getAllCommentairesForumEnfant(Integer idCommentaire) {
+		CommentaireForum[] allCommEnfant = restTemplate.getForObject(base_url_forum+ COMMENTAIRES_ENFANT + SLASH + idCommentaire, CommentaireForum[].class);
+		List<CommentaireForum> listAllCommentaires = Arrays.asList(allCommEnfant);
+		List<CommentaireForumDto> listAllCommentaireDto = remplirListCommentaireForumDto(listAllCommentaires);
+		return listAllCommentaireDto;
 	}
 	
-	//Ajout Chris
-	public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire) {
-		CommentaireForum[] allCommEnfant = restTemplate.getForObject(base_url+ COMMENTAIRES_ENFANT + SLASH + idCommentaire, CommentaireForum[].class);
-		return Arrays.asList(allCommEnfant);
+	private List<CommentaireForumDto> remplirListCommentaireForumDto(List<CommentaireForum> listAllCommentaireBySujet) {
+		List<CommentaireForumDto>  listAllCommentaireBySujetDto = new ArrayList();
+		for(CommentaireForum commentaireForum : listAllCommentaireBySujet) {
+			CommentaireForumDto commentaireForumDto = remplirCommentaireForumDto(commentaireForum);
+			listAllCommentaireBySujetDto.add(commentaireForumDto);
+		}
+		return listAllCommentaireBySujetDto;
+	}
+
+	private CommentaireForumDto remplirCommentaireForumDto(CommentaireForum commentaireForum) {
+		Joueur joueur = wsUtilisateur.getJoueurById(commentaireForum.getIdJoueur());
+		CommentaireForumDto commentaireForumDto = new CommentaireForumDto(
+				commentaireForum.getIdCommentaire(),
+				commentaireForum.getContenu(),
+				commentaireForum.getDateEmission(),
+				commentaireForum.getNote(),
+				commentaireForum.getSujetForum(),
+				commentaireForum.getCommentaireSup(),
+				joueur);
+		return commentaireForumDto;
 	}
 	
+	private List<SujetForumDto> remplirListSujetForumDto(List<SujetForum> listAllSujets) {
+		List<SujetForumDto> listAllSujetsDto = new ArrayList();
+		for (SujetForum sujetForum : listAllSujets) {
+			SujetForumDto sujetForumDto = remplirSujetForumDto(sujetForum);
+			listAllSujetsDto.add(sujetForumDto);
+		}
+		return listAllSujetsDto;
+	}
+
+	private SujetForumDto remplirSujetForumDto(SujetForum sujetForum) {
+		Joueur joueur = wsUtilisateur.getJoueurById(sujetForum.getIdJoueurCreateur());
+		Integer nombreCommentaire = getAllCommentaireBySujet(sujetForum.getIdSujet()).size();
+		SujetForumDto sujetForumDto = new SujetForumDto(sujetForum.getIdSujet(),
+				sujetForum.getLibelle(),
+				sujetForum.getDescriptif(),
+				sujetForum.getDateCreation(),
+				sujetForum.getNote(),
+				sujetForum.getCategorieForum(),
+				joueur,
+				nombreCommentaire);
+		return sujetForumDto;
+	}
+	
+	private List<JoueurCommentaireForumDto> remplirListJoueurCommentaireForumDto(List<JoueurCommentaireForum> listJoueurCommentaires) {
+		List<JoueurCommentaireForumDto> listJoueurCommentaireDto = new ArrayList();
+		for(JoueurCommentaireForum joueurCommentaireForum : listJoueurCommentaires) {
+			JoueurCommentaireForumDto joueurCommentaireForumDto = 
+					remplirJoueurCommentaireForumDto(joueurCommentaireForum);
+			listJoueurCommentaireDto.add(joueurCommentaireForumDto);				
+		}
+		return listJoueurCommentaireDto;
+	}
+
+	private JoueurCommentaireForumDto remplirJoueurCommentaireForumDto(JoueurCommentaireForum joueurCommentaireForum) {
+		Joueur joueur = wsUtilisateur.getJoueurById(joueurCommentaireForum.getIdJoueurCommentaire());
+		JoueurCommentaireForumDto joueurCommentaireForumDto = new JoueurCommentaireForumDto(
+				                      joueurCommentaireForum.getIdJoueurCommentaire(),
+				                      joueurCommentaireForum.getDateNote(),		
+				                      joueur,
+				                      joueurCommentaireForum.getVote(),
+				                      joueurCommentaireForum.getCommentaireForum()
+				                      );
+		return joueurCommentaireForumDto;
+	}
+	
+	private JoueurSujetForumDto remplirJoueurSujetForumDto(Integer idUtilisateur, JoueurSujetForum joueurSujetForum) {
+		return new JoueurSujetForumDto(joueurSujetForum.getIdJoueurSujet(),
+				joueurSujetForum.getDateNote(),
+				joueurSujetForum.getVote(),
+				wsUtilisateur.getJoueurById(idUtilisateur),
+				joueurSujetForum.getSujetForum());
+	}
 }

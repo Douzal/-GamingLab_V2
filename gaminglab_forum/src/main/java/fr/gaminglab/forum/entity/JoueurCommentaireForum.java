@@ -102,6 +102,10 @@ public class JoueurCommentaireForum implements Serializable {
 	public void setVote(Integer vote) {
 		this.vote = vote;
 	}
+	
+	public Integer getIdJoueur() {
+		return idJoueur;
+	}
 
 	public void setIdJoueur(Integer idJoueur) {
 		this.idJoueur = idJoueur;

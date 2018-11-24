@@ -231,7 +231,9 @@ public class ServiceForum implements IServiceForum {
 	}
 
 	@Override
-	public void majNoteSujetForum(JoueurSujetForum joueurSujetForum) {
+	public JoueurSujetForum majNoteSujetForum(JoueurSujetForum joueurSujetForum) {
+		JoueurSujetForum joueurSujetForumAncien = daoJoueurSujet.findByIdJoueurAndSujetForum(joueurSujetForum.getIdJoueur(), joueurSujetForum.getSujetForum());
+		Integer ancienVoteJoueurSujetForum = joueurSujetForumAncien.getVote();
 		Integer voteJoueurSujetForum = joueurSujetForum.getVote();
 		Integer idSujetForum = joueurSujetForum.getSujetForum().getIdSujet();
 		// update joueurSujetForum
@@ -240,12 +242,13 @@ public class ServiceForum implements IServiceForum {
 		if (sujetForum.isPresent()) {
 			SujetForum sujetObjet = daoSujetForum.getOne(idSujetForum);
 			Integer noteSujetForm = sujetObjet.getNote();
-			noteSujetForm = noteSujetForm + voteJoueurSujetForum;
+			noteSujetForm = noteSujetForm + voteJoueurSujetForum - ancienVoteJoueurSujetForum;
 			sujetObjet.setNote(noteSujetForm);
 			daoSujetForum.save(sujetObjet);
 		} else {
 			System.out.println("Not present idSujetForm");
 		}
+		return joueurSujetForum;
 	}
 
 	@Override
@@ -315,7 +318,9 @@ public class ServiceForum implements IServiceForum {
 
 	// Ajout Chris
 	@Override
-	public void updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
+	public JoueurCommentaireForum updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
+		JoueurCommentaireForum joueurCommentaireForumAncien = daoJoueurCommentaireForum.findByIdJoueurAndCommentaireForum(joueurCommentaireForum.getIdJoueur(), joueurCommentaireForum.getCommentaireForum());
+		Integer ancienVoteJoueurCommentaireForum = joueurCommentaireForumAncien.getVote();
 		Integer voteJoueurCommentaireForum = joueurCommentaireForum.getVote();
 		Integer idCommentaireForum = joueurCommentaireForum.getCommentaireForum().getIdCommentaire();
 		daoJoueurCommentaireForum.save(joueurCommentaireForum);
@@ -324,12 +329,13 @@ public class ServiceForum implements IServiceForum {
 		if (commentaireForum.isPresent()) {
 			CommentaireForum commentaireObjet = daoCommentaireForum.getOne(idCommentaireForum);
 			Integer noteCommentaireForm = commentaireObjet.getNote();
-			noteCommentaireForm = noteCommentaireForm + voteJoueurCommentaireForum;
+			noteCommentaireForm = noteCommentaireForm + voteJoueurCommentaireForum - ancienVoteJoueurCommentaireForum;
 			commentaireObjet.setNote(noteCommentaireForm);
 			daoCommentaireForum.save(commentaireObjet);
 		} else {
 			System.out.println("Not present idCommentaireForm");
 		}
+		return joueurCommentaireForum;
 	}
 
 }

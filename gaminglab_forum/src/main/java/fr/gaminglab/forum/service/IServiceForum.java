@@ -114,12 +114,12 @@ public interface IServiceForum {
 	public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet);
 	//Modif Chris
 	public JoueurSujetForum ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum);
-	public void majNoteSujetForum(JoueurSujetForum joueurSujetForum);
+	public JoueurSujetForum majNoteSujetForum(JoueurSujetForum joueurSujetForum);
 	public List<CommentaireForum> getAllCommentairesForumParent(Integer idSujet);
 	public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire);
 	
 	//Ajouts Chris
 	public JoueurCommentaireForum getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire);
 	public JoueurCommentaireForum insertJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
-	public void updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
+	public JoueurCommentaireForum updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
 }

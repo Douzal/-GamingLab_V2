@@ -47,6 +47,21 @@ public class CommentaireForum implements Serializable, Comparable<CommentaireFor
 		this.commentaireSup = commentaireSup;
 		this.idJoueur = idjoueur;
 	}
+	
+	public CommentaireForum(Integer idCommentaire, String contenu, Date dateEmission, Integer note,
+			SujetForum sujetForum, CommentaireForum commentaireSup,
+			Integer idJoueur) {
+		super();
+		this.idCommentaire = idCommentaire;
+		this.contenu = contenu;
+		this.dateEmission = dateEmission;
+		this.note = note;
+		this.sujetForum = sujetForum;
+		this.commentaireSup = commentaireSup;
+		this.idJoueur = idJoueur;
+	}
+
+
 
 	/**
 	 * 

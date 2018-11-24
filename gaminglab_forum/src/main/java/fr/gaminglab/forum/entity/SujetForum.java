@@ -43,6 +43,23 @@ public class SujetForum implements Serializable {
 		this.categorieForum = categorieForum;
 		this.idJoueurCreateur = idJoueur;
 	}
+    
+    
+
+	public SujetForum(Integer idSujet, String libelle, String descriptif, Date dateCreation, Integer note,
+			Set<CommentaireForum> commentairesForum, CategorieForum categorieForum, Integer idJoueurCreateur
+			) {
+		super();
+		this.idSujet = idSujet;
+		this.libelle = libelle;
+		this.descriptif = descriptif;
+		this.dateCreation = dateCreation;
+		this.note = note;
+		this.categorieForum = categorieForum;
+		this.idJoueurCreateur = idJoueurCreateur;
+	}
+
+
 
 	/**
      * 

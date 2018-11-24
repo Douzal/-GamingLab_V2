@@ -163,9 +163,9 @@ public class ForumController {
 		return serviceForum.ajouterJoueurSujetForum(joueurSujetForum);
 	}
 	
-	@PutMapping("/majjoueursujetforum")
-	public void majNoteJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
-		serviceForum.majNoteSujetForum(joueurSujetForum);
+	@PostMapping("/majjoueursujetforum")
+	public JoueurSujetForum majNoteJoueurSujetForum(@RequestBody JoueurSujetForum joueurSujetForum) {
+		return serviceForum.majNoteSujetForum(joueurSujetForum);
 	}
 
 	@GetMapping("/commentaires_parent/{idSujet}") 
@@ -208,8 +208,8 @@ public class ForumController {
 	}
 	
 	//Ajout Chris
-	@PutMapping("/joueurcommentaireforum")
-	public void updateJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
-		serviceForum.updateJoueurCommentaireForum(joueurCommentaireForum);
+	@PostMapping("/joueurcommentaireforum")
+	public JoueurCommentaireForum updateJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
+		return serviceForum.updateJoueurCommentaireForum(joueurCommentaireForum);
 	}
 }
