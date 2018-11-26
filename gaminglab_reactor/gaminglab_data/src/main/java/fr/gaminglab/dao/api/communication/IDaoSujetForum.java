@@ -31,7 +31,7 @@ public interface IDaoSujetForum extends JpaRepository<SujetForum, Integer> {
      * @param idUtilisateur
      * @return
      */
-    public List<SujetForum> findByJoueurIdUtilisateur(Integer idUtilisateur);
+    //public List<SujetForum> findByJoueurIdUtilisateur(Integer idUtilisateur);
     //coucou
     /**
      * @param jeu

@@ -150,4 +150,10 @@ public class ForumAngularController {
 		return wsForum.getAllCommentairesForumEnfant(idCommentaire);
 	}
 	
+	//Ajout Chris 26/11
+	@GetMapping("/sujets/{libelle}")
+	public List<SujetForum> getAllSujetsByLibelle(@PathVariable String libelle) {
+		return wsForum.getAllSujeLibelle(libelle);
+	}
+	
 }

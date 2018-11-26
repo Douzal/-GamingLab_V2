@@ -84,7 +84,7 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
     public SujetForum ajouterSujet(SujetForum sujet, Joueur joueur) {
-        sujet.setJoueur(joueur);
+        //sujet.setJoueur(joueur);
     	return daoSujetForum.save(sujet);        
     }
 
@@ -119,7 +119,7 @@ public class ServiceForum implements IServiceForum {
      * @return
      */
      public List<SujetForum> getSujetByJoueur(Integer idJoueur) {
-        return daoSujetForum.findByJoueurIdUtilisateur(idJoueur);      	
+        return null;      	
       }
      
       public List<SujetForum> getSujetByJeu(Jeu jeu) {
@@ -189,7 +189,7 @@ public class ServiceForum implements IServiceForum {
 
     @Override
     public List<SujetForum> getSujetForumByJoueur(Integer idUtilisateur) {
-        return daoSujetForum.findByJoueurIdUtilisateur(idUtilisateur);
+        return null;
     }
     
     @Override
