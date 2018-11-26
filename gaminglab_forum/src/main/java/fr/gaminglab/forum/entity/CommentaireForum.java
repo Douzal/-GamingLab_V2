@@ -29,7 +29,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCommentaire", scope = CommentaireForum.class)
-@NamedQuery(name = "CommentaireForum.findByIdCommentaireAndCommentaireSupQuery", query = "SELECT b FROM CommentaireForum b WHERE b.idCommentaire=?1 And b.idCommentaire=b.commentaireSup")
+@NamedQuery(name = "CommentaireForum.findByIdCommentaireAndCommentaireSupQuery", query = "SELECT b FROM CommentaireForum b WHERE b.idCommentaireSup = :idCommentaire")
+//@NamedQuery(name = "CommentaireForum.findByIdCommentaireAndCommentaireSupQuery", query = "SELECT b FROM CommentaireForum b WHERE b.idCommentaire=?1 And b.idCommentaire=b.commentaireSup.idCommentaire")
 public class CommentaireForum implements Serializable, Comparable<CommentaireForum> {
 
 	/**
@@ -39,17 +40,17 @@ public class CommentaireForum implements Serializable, Comparable<CommentaireFor
 	}
 
 	public CommentaireForum(String contenu, Date dateEmission, Integer note, SujetForum sujetForum,
-			CommentaireForum commentaireSup, Integer idjoueur) {
+			Integer idCommentaireSup, Integer idjoueur) {
 		this.contenu = contenu;
 		this.dateEmission = dateEmission;
 		this.note = note;
 		this.sujetForum = sujetForum;
-		this.commentaireSup = commentaireSup;
+		this.idCommentaireSup = idCommentaireSup;
 		this.idJoueur = idjoueur;
 	}
 	
 	public CommentaireForum(Integer idCommentaire, String contenu, Date dateEmission, Integer note,
-			SujetForum sujetForum, CommentaireForum commentaireSup,
+			SujetForum sujetForum, Integer idCommentaireSup,
 			Integer idJoueur) {
 		super();
 		this.idCommentaire = idCommentaire;
@@ -57,7 +58,7 @@ public class CommentaireForum implements Serializable, Comparable<CommentaireFor
 		this.dateEmission = dateEmission;
 		this.note = note;
 		this.sujetForum = sujetForum;
-		this.commentaireSup = commentaireSup;
+		this.idCommentaireSup = idCommentaireSup;
 		this.idJoueur = idJoueur;
 	}
 
@@ -99,16 +100,17 @@ public class CommentaireForum implements Serializable, Comparable<CommentaireFor
 	/**
 	 * 
 	 */
-	@OneToMany(mappedBy = "commentaireSup")
+	@OneToMany(mappedBy = "idCommentaireSup")
 	@JsonIgnore
 	private Set<CommentaireForum> commentairesInf;
 
 	/**
 	 * 
 	 */
-	@ManyToOne
-	@JoinColumn(name = "idCommentaireSup")
-	private CommentaireForum commentaireSup;
+//	@ManyToOne
+//	@JoinColumn(name = "idCommentaireSup")
+	@Column(name="idCommentaireSup")
+	private Integer idCommentaireSup;
 
 	/**
 	 *
@@ -171,12 +173,12 @@ public class CommentaireForum implements Serializable, Comparable<CommentaireFor
 		commentairesInf = paramCommentairesInf;
 	}
 
-	public CommentaireForum getCommentaireSup() {
-		return commentaireSup;
+	public Integer getIdCommentaireSup() {
+		return idCommentaireSup;
 	}
 
-	public void setCommentaireSup(CommentaireForum paramCommentaireSup) {
-		commentaireSup = paramCommentaireSup;
+	public void setIdCommentaireSup(Integer paramIdCommentaireSup) {
+		idCommentaireSup = paramIdCommentaireSup;
 	}
 
 	public Integer getIdJoueur() {
@@ -214,5 +216,15 @@ public class CommentaireForum implements Serializable, Comparable<CommentaireFor
 
 		return compare;
 	}
+
+	@Override
+	public String toString() {
+		return "CommentaireForum [idCommentaire=" + idCommentaire + ", contenu=" + contenu + ", dateEmission="
+				+ dateEmission + ", note=" + note + ", sujetForum=" + sujetForum.getIdSujet() + ", commentairesInf="
+				+ commentairesInf + ", commentaireSup=" + idCommentaireSup + ", idJoueur=" + idJoueur
+				+ ", joueursCommentaireForum=" + joueursCommentaireForum + "]";
+	}
+	
+	
 
 }

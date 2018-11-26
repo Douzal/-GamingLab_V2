@@ -92,8 +92,8 @@ public class ServiceUtilisateur implements IServiceUtilisateur {
      * @param password 
      * @return
      */
-    public Utilisateur connexion(String pseudo, String password) {
-        return daoUtilisateur.findByPseudoOrMailAndAndPassword(pseudo, pseudo, password);
+    public Joueur connexion(String pseudo, String password) {
+        return daoJoueur.findByMailOrPseudoAndPassword(pseudo, pseudo, password);
     }
 
     @Override

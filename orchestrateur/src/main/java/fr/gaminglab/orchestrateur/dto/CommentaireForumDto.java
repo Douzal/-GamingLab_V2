@@ -17,13 +17,13 @@ public class CommentaireForumDto implements Serializable {
 	}
 	
 	public CommentaireForumDto(Integer idCommentaire, String contenu, Date dateEmission, Integer note, SujetForum sujetForum,
-			CommentaireForum commentaireSup, Joueur joueur) {
+			Integer idCommentaireSup, Joueur joueur) {
 		this.idCommentaire = idCommentaire;
 		this.contenu = contenu;
 		this.dateEmission = dateEmission;
 		this.note = note;
 		this.sujetForum = sujetForum;
-		this.commentaireSup = commentaireSup;
+		this.idCommentaireSup = idCommentaireSup;
 		this.joueur = joueur;
 	}
 	
@@ -33,11 +33,12 @@ public class CommentaireForumDto implements Serializable {
 	private Integer note;
 	private SujetForum sujetForum;
 	private Set<CommentaireForum> commentairesInf;
-	private CommentaireForum commentaireSup;
+	private Integer idCommentaireSup;
 	private Joueur joueur;
 	
 	@JsonIgnore
 	private Set<JoueurCommentaireForum> joueursCommentaireForum;
+	
 	public Integer getIdCommentaire() {
 		return idCommentaire;
 	}
@@ -86,12 +87,12 @@ public class CommentaireForumDto implements Serializable {
 		this.commentairesInf = commentairesInf;
 	}
 
-	public CommentaireForum getCommentaireSup() {
-		return commentaireSup;
+	public Integer getIdCommentaireSup() {
+		return idCommentaireSup;
 	}
 
-	public void setCommentaireSup(CommentaireForum commentaireSup) {
-		this.commentaireSup = commentaireSup;
+	public void setIdCommentaireSup(Integer idCommentaireSup) {
+		this.idCommentaireSup = idCommentaireSup;
 	}
 
 	public Joueur getJoueur() {

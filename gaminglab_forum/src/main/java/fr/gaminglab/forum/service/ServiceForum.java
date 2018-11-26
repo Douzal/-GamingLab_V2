@@ -60,7 +60,7 @@ public class ServiceForum implements IServiceForum {
 
 	@Override
 	public Optional<CommentaireForum> getCommentaireForumById(Integer id) {
-		return daoCommentaireForum.findById(id);
+		return daoCommentaireForum.findByIdCommentaire(id);
 	}
 
 	/**
@@ -70,7 +70,16 @@ public class ServiceForum implements IServiceForum {
 	 */
 	public CommentaireForum ajouterCommentaire(CommentaireForum comForum, Integer idJoueur) {
 		comForum.setIdJoueur(idJoueur);
-		return daoCommentaireForum.save(comForum);
+		
+		CommentaireForum nouveauComm = daoCommentaireForum.save(comForum);
+		
+		JoueurCommentaireForum jcf = insertJoueurCommentaireForum(new JoueurCommentaireForum(
+				nouveauComm.getDateEmission(),
+				idJoueur,
+				1,
+				nouveauComm));
+		
+		return nouveauComm;
 	}
 
 	/**
@@ -257,7 +266,7 @@ public class ServiceForum implements IServiceForum {
 		if (sujetForum.isPresent()) {
 			// return
 			// daoCommentaireForum.findBySujetForumAndCommentaireSupNull(sujetForum.get());
-			List<CommentaireForum> listes = daoCommentaireForum.findBySujetForumAndCommentaireSupNull(sujetForum.get());
+			List<CommentaireForum> listes = daoCommentaireForum.findBySujetForumAndIdCommentaireSupNull(sujetForum.get());
 			return (List<CommentaireForum>) listes.stream().sorted((p1, p2) -> (p2.compareTo(p1)))
 					.collect(Collectors.toList());
 		} else {
@@ -270,27 +279,32 @@ public class ServiceForum implements IServiceForum {
 	@Override
 	public List<CommentaireForum> getAllCommentairesForumEnfant(Integer idCommentaire) {// .sorted((p1, p2) ->
 																						// (p1.getVote().compareTo(p2.getVote())))
-		Optional<CommentaireForum> commentaire = daoCommentaireForum.findById(idCommentaire);
-		if(commentaire.isPresent()) {
-			return (List<CommentaireForum>) commentaire.get().getCommentairesInf().stream()
-					.sorted((p1, p2) -> (p2.compareTo(p1)))
-					.collect(Collectors.toList());
-		} else {
-			return new ArrayList();
-		}
+//		Optional<CommentaireForum> commentaire = daoCommentaireForum.findById(idCommentaire);
+//		if(commentaire.isPresent()) {
+//			return (List<CommentaireForum>) commentaire.get().getCommentairesInf().stream()
+//					.sorted((p1, p2) -> (p2.compareTo(p1)))
+//					.collect(Collectors.toList());
+//		} else {
+//			return new ArrayList();
+//		}
 		
+		//Modif Chris
+		return (List<CommentaireForum>) daoCommentaireForum.findByIdCommentaireAndCommentaireSupQuery(idCommentaire).stream()
+				.sorted((p1, p2) -> (p2.compareTo(p1)))
+				.collect(Collectors.toList());
 	}
 
 	// Ajout Chris
 	@Override
 	public JoueurCommentaireForum getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire) {
 		Optional<CommentaireForum> commentaireForum = daoCommentaireForum.findById(idCommentaire);
-		JoueurCommentaireForum joueurCommentaireForum = new JoueurCommentaireForum();
+		JoueurCommentaireForum joueurCommentaireForum;
 		if (commentaireForum.isPresent()) {
 			joueurCommentaireForum = daoJoueurCommentaireForum.findByIdJoueurAndCommentaireForum(idUtilisateur,
 					commentaireForum.get());
 		} else {
 			System.out.println("Erreur getJoueurSujetCommentaireByIdJoueurCommentaire");
+			joueurCommentaireForum = null;
 		}
 		return joueurCommentaireForum;
 	}

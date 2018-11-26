@@ -21,6 +21,7 @@ public class SujetForumDto implements Serializable {
 		this.categorieForum = categorieForum;
 		this.joueur = joueur;
 		this.nombreCommentaires = nombreCommentaire;
+		this.descriptif = descriptif;
 	}
 
 	/**

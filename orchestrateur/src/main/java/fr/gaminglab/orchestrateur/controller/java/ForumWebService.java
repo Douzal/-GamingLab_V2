@@ -8,6 +8,8 @@ import java.util.Properties;
 
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
+
 import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.forum.entity.CategorieForum;
 import fr.gaminglab.forum.entity.CommentaireForum;
@@ -21,6 +23,7 @@ import fr.gaminglab.orchestrateur.dto.SujetForumDto;
 
 public class ForumWebService {
 
+	private static final String MAJJOUEURCOMMENTAIREFORUM = "/majjoueurcommentaireforum";
 	private static final String COMMENTAIRES_ENFANT = "/commentaires_enfant";
 	private static final String COMMENTAIRES_PARENT = "/commentaires_parent";
 	private static final String SUJETS = "/sujets";
@@ -31,7 +34,7 @@ public class ForumWebService {
 	private static final String COMMENTAIRE_SUP = "/commentairesup";
 	private static final String SUJET_AJOUTER = "/sujetajouter";
 	private static final String COMMENTAIRE_AJOUTER = "/commentaireajouter";
-	private static final String COMMENTAIRE = "commentaire";
+	private static final String COMMENTAIRE = "/commentaire";
 	private static final String CATEGORIE_JOUEUR = "/categoriejoueur";
 	private static final String SUJET = "/sujet";
 	private static final String SLASH = "/";
@@ -178,9 +181,24 @@ public class ForumWebService {
 	 * @param idJoueur
 	 * @return
 	 */
-	public CommentaireForum ajouterCommentaire(CommentaireForum commentaireForum, Integer idJoueur) {
-		return restTemplate.postForObject(base_url_forum + COMMENTAIRE_AJOUTER + SLASH + idJoueur, commentaireForum,
-				CommentaireForum.class);
+	public CommentaireForumDto ajouterCommentaire (CommentaireForumDto commentaireForumDto) {
+		
+		Integer idJoueur = commentaireForumDto.getJoueur().getIdUtilisateur();
+		
+		CommentaireForum commentaireForum = new CommentaireForum(
+				commentaireForumDto.getContenu(),
+				commentaireForumDto.getDateEmission(),
+				commentaireForumDto.getNote(),
+				commentaireForumDto.getSujetForum(),
+				commentaireForumDto.getIdCommentaireSup(),
+				idJoueur);
+		
+		CommentaireForum commentaireAfterInsert = 
+				restTemplate.postForObject(base_url_forum + COMMENTAIRE_AJOUTER + SLASH + idJoueur, 
+						commentaireForum, 
+						CommentaireForum.class);
+		
+		return remplirCommentaireForumDto(commentaireAfterInsert);
 	}
 
 	/**
@@ -211,12 +229,10 @@ public class ForumWebService {
 	 * @param idCommentaire
 	 * @return
 	 */
-	public List<JoueurCommentaireForum> getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire) {
-		JoueurCommentaireForum[] joueurCommentaireForums = restTemplate.getForObject(
+	public JoueurCommentaireForum getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire) {
+		return restTemplate.getForObject(
 				base_url_forum + JOUEUR_COMMENTAIRE_FORUM + SLASH + idUtilisateur + SLASH + idCommentaire,
-				JoueurCommentaireForum[].class);
-		List<JoueurCommentaireForum> listJoueurCommentaires = Arrays.asList(joueurCommentaireForums);
-		return listJoueurCommentaires;		
+				JoueurCommentaireForum.class);		
 	}
 
 	//Modif Chris
@@ -228,7 +244,6 @@ public class ForumWebService {
 	 * @return
 	 */
 	public JoueurSujetForum getJoueurSujetForumByIdJoueurSujet(Integer idUtilisateur, Integer idSujet) {
-		
 		JoueurSujetForum joueurSujetForum = restTemplate.getForObject(base_url_forum + JOUEUR_SUJET_FORUM + SLASH + idUtilisateur + SLASH + idSujet, JoueurSujetForum.class);
 		return joueurSujetForum;
 	}
@@ -281,7 +296,7 @@ public class ForumWebService {
 	 * @param joueurSujetForum
 	 */
 	public JoueurCommentaireForum updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum) {
-		return restTemplate.postForObject(base_url_forum + JOUEUR_COMMENTAIRE_FORUM, joueurCommentaireForum, JoueurCommentaireForum.class);
+		return restTemplate.postForObject(base_url_forum + MAJJOUEURCOMMENTAIREFORUM, joueurCommentaireForum, JoueurCommentaireForum.class);
 	}
 	
 	public JoueurSujetForum ajouterJoueurSujetForum(JoueurSujetForum joueurSujetForum) {
@@ -310,7 +325,7 @@ public class ForumWebService {
 	
 	//Ajout Chris
 	public List<CommentaireForumDto> getAllCommentairesForumEnfant(Integer idCommentaire) {
-		CommentaireForum[] allCommEnfant = restTemplate.getForObject(base_url_forum+ COMMENTAIRES_ENFANT + SLASH + idCommentaire, CommentaireForum[].class);
+		CommentaireForum[] allCommEnfant = restTemplate.getForObject(base_url_forum + COMMENTAIRES_ENFANT + SLASH + idCommentaire, CommentaireForum[].class);
 		List<CommentaireForum> listAllCommentaires = Arrays.asList(allCommEnfant);
 		List<CommentaireForumDto> listAllCommentaireDto = remplirListCommentaireForumDto(listAllCommentaires);
 		return listAllCommentaireDto;
@@ -327,13 +342,14 @@ public class ForumWebService {
 
 	private CommentaireForumDto remplirCommentaireForumDto(CommentaireForum commentaireForum) {
 		Joueur joueur = wsUtilisateur.getJoueurById(commentaireForum.getIdJoueur());
+		
 		CommentaireForumDto commentaireForumDto = new CommentaireForumDto(
 				commentaireForum.getIdCommentaire(),
 				commentaireForum.getContenu(),
 				commentaireForum.getDateEmission(),
 				commentaireForum.getNote(),
 				commentaireForum.getSujetForum(),
-				commentaireForum.getCommentaireSup(),
+				commentaireForum.getIdCommentaireSup(),
 				joueur);
 		return commentaireForumDto;
 	}

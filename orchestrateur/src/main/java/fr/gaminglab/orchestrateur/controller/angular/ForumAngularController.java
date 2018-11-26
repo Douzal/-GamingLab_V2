@@ -72,11 +72,11 @@ public class ForumAngularController {
 		return wsForum.getCommentaireForumDtoById(idCommentaire);
 	}
 
-	//Modif Chris
+	//Modif Chris 25/11
 	@PostMapping("/commentaire")
-	public void ajouterCommentaire(@RequestBody CommentaireForumDto commentaireForumDto) {
-		CommentaireForum commentaireForum = wsForum.getCommentaireForumById(commentaireForumDto.getIdCommentaire());
-		wsForum.ajouterCommentaire(commentaireForum, commentaireForum.getIdJoueur());
+	public CommentaireForumDto ajouterCommentaire(@RequestBody CommentaireForumDto commentaireForumDto) {
+		
+		return wsForum.ajouterCommentaire(commentaireForumDto);
 	}
 
 	@PostMapping("/sujetajouter/{idJoueur}")
@@ -97,8 +97,8 @@ public class ForumAngularController {
 	}
 
 	@GetMapping("/joueurcommentaireforum/{idUtilisateur}/{idCommentaire}/")
-	@ResponseBody
-	List<JoueurCommentaireForum> getJoueurCommentaireForum(@PathVariable Integer idUtilisateur,
+	//@ResponseBody
+	JoueurCommentaireForum getJoueurCommentaireForum(@PathVariable Integer idUtilisateur,
 														   @PathVariable Integer idCommentaire) {
 
 		return wsForum.getJoueurCommentaireForum(idUtilisateur, idCommentaire);
@@ -133,7 +133,7 @@ public class ForumAngularController {
 	}
 	
 	//Ajout Chris
-	@PostMapping("/joueurcommentaireforum")
+	@PostMapping("/majjoueurcommentaireforum")
 	public JoueurCommentaireForum updateJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
 		return wsForum.updateJoueurCommentaireForum(joueurCommentaireForum);
 	}
@@ -146,7 +146,7 @@ public class ForumAngularController {
 	
 	//Ajout Chris
 	@GetMapping("/commentaires_enfant/{idCommentaire}")
-	public List<CommentaireForumDto> getAllCommentairesForumEnfant(Integer idCommentaire) {
+	public List<CommentaireForumDto> getAllCommentairesForumEnfant(@PathVariable Integer idCommentaire) {		
 		return wsForum.getAllCommentairesForumEnfant(idCommentaire);
 	}
 	

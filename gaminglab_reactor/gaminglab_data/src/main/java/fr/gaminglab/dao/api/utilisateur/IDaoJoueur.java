@@ -21,4 +21,6 @@ public interface IDaoJoueur extends JpaRepository<Joueur, Integer> {
      * @return
      */
     public List<Joueur> findTop5ByPseudoStartingWith(String pseudo);
+    
+    public Joueur findByMailOrPseudoAndPassword(String mail, String pseudo, String password);
 }

@@ -2,6 +2,7 @@ package fr.gaminglab.forum.data;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,9 @@ public interface IDaoCommentaireForum extends JpaRepository<CommentaireForum, In
 
     public List<CommentaireForum> findByIdJoueur(Integer idUtilisateur);
     
-    public List<CommentaireForum> findBySujetForumAndCommentaireSupNull(SujetForum sujet);    
+    public List<CommentaireForum> findBySujetForumAndIdCommentaireSupNull(SujetForum sujet);    
     
-    public List<CommentaireForum> findByIdCommentaireAndCommentaireSupQuery(Integer commentaire);
+    public List<CommentaireForum> findByIdCommentaireAndCommentaireSupQuery(Integer idCommentaire);
+    
+    public Optional<CommentaireForum> findByIdCommentaire(Integer idCommentaire);
 }
