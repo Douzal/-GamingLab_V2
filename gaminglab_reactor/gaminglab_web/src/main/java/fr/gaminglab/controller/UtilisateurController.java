@@ -53,7 +53,7 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/connexion/{pseudo}/{password}")
-	public Utilisateur connexionJoueur(@PathVariable String pseudo,@PathVariable String password){
+	public Joueur connexionJoueur(@PathVariable String pseudo,@PathVariable String password){
 		return serviceUtilisateur.connexion(pseudo, password);
 	}
 

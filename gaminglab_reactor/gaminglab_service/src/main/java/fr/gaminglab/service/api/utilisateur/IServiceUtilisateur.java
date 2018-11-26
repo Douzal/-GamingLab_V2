@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface IServiceUtilisateur {
 
 
-    public Utilisateur connexion(String pseudo, String password);
+    public Joueur connexion(String pseudo, String password);
 
 
     public List<Joueur> getAllJoueur();

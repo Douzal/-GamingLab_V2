@@ -92,12 +92,21 @@ public class ForumController {
 
 	@GetMapping("/commentaire/{idCommentaire}")
 	CommentaireForum getCommentaireForumById(@PathVariable Integer idCommentaire) {
-		return null;
+		Optional<CommentaireForum> optComm = serviceForum.getCommentaireForumById(idCommentaire);
+		
+		CommentaireForum comm;
+		if (optComm.isPresent()) {
+			comm = optComm.get();
+		} else {
+			comm = null;
+		}
+		
+		return comm;
 	}
 
 	@PostMapping("/commentaireajouter/{idJoueur}")
-	public void ajouterCommentaire(@RequestBody CommentaireForum commentaireForum, @PathVariable Integer idJoueur) {
-		CommentaireForum restJoueurForum = serviceForum.ajouterCommentaire(commentaireForum, idJoueur);
+	public CommentaireForum ajouterCommentaire(@RequestBody CommentaireForum commentaireForum, @PathVariable Integer idJoueur) {
+		return serviceForum.ajouterCommentaire(commentaireForum, idJoueur);
 	}
 
 	@PostMapping("/sujetajouter/{idJoueur}")
@@ -180,7 +189,7 @@ public class ForumController {
 	}
 	
 	//Modif Chris
-	@GetMapping("/joueurcommentaireforum/{idUtilisateur}/{idCommentaire}/")
+	@GetMapping("/joueurcommentaireforum/{idUtilisateur}/{idCommentaire}")
 	//@ResponseBody
 	public JoueurCommentaireForum getJoueurCommentaireForum(@PathVariable Integer idUtilisateur,
 														   @PathVariable Integer idCommentaire) {
@@ -208,7 +217,7 @@ public class ForumController {
 	}
 	
 	//Ajout Chris
-	@PostMapping("/joueurcommentaireforum")
+	@PostMapping("/majjoueurcommentaireforum")
 	public JoueurCommentaireForum updateJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
 		return serviceForum.updateJoueurCommentaireForum(joueurCommentaireForum);
 	}

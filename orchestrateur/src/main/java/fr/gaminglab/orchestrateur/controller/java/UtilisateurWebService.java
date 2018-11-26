@@ -83,9 +83,9 @@ public class UtilisateurWebService {
 	 * @param password
 	 * @return
 	 */
-	public Utilisateur connexionJoueur(String pseudo, String password) {
+	public Joueur connexionJoueur(String pseudo, String password) {
 		return restTemplate.postForObject(base_url + CONNEXION + SLASH + pseudo + SLASH + password, null,
-				Utilisateur.class);
+				Joueur.class);
 	}
 
 	/**
