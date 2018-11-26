@@ -122,4 +122,7 @@ public interface IServiceForum {
 	public JoueurCommentaireForum getJoueurCommentaireForum(Integer idUtilisateur, Integer idCommentaire);
 	public JoueurCommentaireForum insertJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
 	public JoueurCommentaireForum updateJoueurCommentaireForum(JoueurCommentaireForum joueurCommentaireForum);
+
+    //Ajout Chris 26/11
+    public List<SujetForum> getAllSujetsByLibelle(String libelle);
 }

@@ -160,7 +160,7 @@ public class Joueur extends Utilisateur implements Serializable {
     /**
      *
      */
-    @OneToMany(mappedBy="joueur")
+    @OneToMany(mappedBy="idJoueurCreateur")
 	@JsonIgnore
     private Set<SujetForum> sujets;
 

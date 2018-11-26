@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,12 +35,13 @@ public class SujetForum implements Serializable {
     public SujetForum() {
     }
 
-    public SujetForum(String libelle, Date dateCreation, Integer note, CategorieForum categorieForum, Joueur joueur) {
+    public SujetForum(String libelle, Date dateCreation, Integer note, CategorieForum categorieForum, Integer idJoueurCreateur, String descriptif) {
         this.libelle = libelle;
         this.dateCreation = dateCreation;
         this.note = note;
         this.categorieForum = categorieForum;
-        this.joueur = joueur;
+        this.idJoueurCreateur = idJoueurCreateur;
+        this.descriptif = descriptif;
     }
 
     /**
@@ -84,9 +86,8 @@ public class SujetForum implements Serializable {
     /**
      *
      */
-    @ManyToOne
-    @JoinColumn(name="idJoueurCreateur")
-    private Joueur joueur;
+    @Column(nullable = false)
+    private Integer idJoueurCreateur;
 
     /**
      * 
@@ -94,6 +95,9 @@ public class SujetForum implements Serializable {
     @OneToMany(mappedBy="sujetForum")
 	@JsonIgnore
     private Set<JoueurSujetForum> joueursSujetForum;
+    
+    @Column(nullable=false, columnDefinition="TEXT")
+    private String descriptif;
 
 	public Integer getIdSujet() {
 		return idSujet;
@@ -143,12 +147,12 @@ public class SujetForum implements Serializable {
 		categorieForum = paramCategorieForum;
 	}
 
-	public Joueur getJoueur() {
-		return joueur;
+	public Integer getIdJoueurCreateur() {
+		return idJoueurCreateur;
 	}
 
-	public void setJoueur(Joueur paramJoueur) {
-		joueur = paramJoueur;
+	public void setIdJoueurCreateur(Integer paramIdJoueurCreateur) {
+		idJoueurCreateur = paramIdJoueurCreateur;
 	}
 
 	public Set<JoueurSujetForum> getJoueursSujetForum() {
@@ -157,6 +161,14 @@ public class SujetForum implements Serializable {
 
 	public void setJoueursSujetForum(Set<JoueurSujetForum> paramJoueursSujetForum) {
 		joueursSujetForum = paramJoueursSujetForum;
+	}
+
+	public String getDescriptif() {
+		return descriptif;
+	}
+
+	public void setDescriptif(String descriptif) {
+		this.descriptif = descriptif;
 	}
     
     

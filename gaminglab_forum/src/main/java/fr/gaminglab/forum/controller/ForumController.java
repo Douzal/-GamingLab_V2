@@ -221,4 +221,10 @@ public class ForumController {
 	public JoueurCommentaireForum updateJoueurCommentaireForum(@RequestBody JoueurCommentaireForum joueurCommentaireForum) {
 		return serviceForum.updateJoueurCommentaireForum(joueurCommentaireForum);
 	}
+	
+	//Ajout Chris 26/11
+	@GetMapping("/sujets/{libelle}")
+    public List<SujetForum> getAllSujetsByLibelle (@PathVariable String libelle) {
+    	return serviceForum.getAllSujetsByLibelle(libelle);
+    }
 }

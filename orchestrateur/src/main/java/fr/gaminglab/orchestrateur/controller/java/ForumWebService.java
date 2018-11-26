@@ -23,10 +23,11 @@ import fr.gaminglab.orchestrateur.dto.SujetForumDto;
 
 public class ForumWebService {
 
+	private static final String SUJETS2 = "/sujets";
 	private static final String MAJJOUEURCOMMENTAIREFORUM = "/majjoueurcommentaireforum";
 	private static final String COMMENTAIRES_ENFANT = "/commentaires_enfant";
 	private static final String COMMENTAIRES_PARENT = "/commentaires_parent";
-	private static final String SUJETS = "/sujets";
+	private static final String SUJETS = SUJETS2;
 	private static final String MAJ_JOUEUR_SUJET_FORUM = "/majjoueursujetforum";
 	private static final String AJOUTER_JOUEUR_SUJET_FORUM = "/ajouterjoueursujetforum";
 	private static final String JOUEUR_SUJET_FORUM = "/joueursujetforum";
@@ -405,5 +406,13 @@ public class ForumWebService {
 				joueurSujetForum.getVote(),
 				wsUtilisateur.getJoueurById(idUtilisateur),
 				joueurSujetForum.getSujetForum());
+	}
+	
+	//Ajout Chris : 26/11
+	public List<SujetForum> getAllSujeLibelle(String libelle) {
+		
+		SujetForum[] sujets = restTemplate.getForObject(base_url_forum + SUJETS2 + SLASH + libelle, SujetForum[].class);
+		
+		return Arrays.asList(sujets);
 	}
 }

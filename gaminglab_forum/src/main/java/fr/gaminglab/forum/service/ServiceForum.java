@@ -351,5 +351,9 @@ public class ServiceForum implements IServiceForum {
 		}
 		return joueurCommentaireForum;
 	}
+	
+	public List<SujetForum> getAllSujetsByLibelle (String libelle) {
+		return daoSujetForum.findTop5ByLibelleStartingWith(libelle);
+	}
 
 }

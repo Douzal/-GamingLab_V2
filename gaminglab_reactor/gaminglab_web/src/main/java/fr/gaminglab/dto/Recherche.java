@@ -2,6 +2,7 @@ package fr.gaminglab.dto;
 
 import fr.gaminglab.entity.boutique.Article;
 import fr.gaminglab.entity.communication.SujetForum;
+import  fr.gaminglab.dto.SujetForumDto;
 import fr.gaminglab.entity.jeu.Jeu;
 import fr.gaminglab.entity.jeu.Tag;
 import fr.gaminglab.entity.utilisateur.Joueur;
