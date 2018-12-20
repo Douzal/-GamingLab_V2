@@ -16,7 +16,7 @@ import fr.gaminglab.entity.utilisateur.Joueur;
 import fr.gaminglab.entity.utilisateur.Utilisateur;
 import fr.gaminglab.orchestrateur.controller.java.UtilisateurWebService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8186"})
 @RestController
 @RequestMapping("/gaminglab")
 public class UtilisateurAngularController {

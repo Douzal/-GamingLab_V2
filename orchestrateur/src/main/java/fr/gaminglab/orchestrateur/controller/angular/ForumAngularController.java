@@ -24,7 +24,7 @@ import fr.gaminglab.orchestrateur.dto.JoueurCommentaireForumDto;
 import fr.gaminglab.orchestrateur.dto.JoueurSujetForumDto;
 import fr.gaminglab.orchestrateur.dto.SujetForumDto;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8186"})
 @RestController
 @RequestMapping("/gaminglab/forum")
 public class ForumAngularController {
