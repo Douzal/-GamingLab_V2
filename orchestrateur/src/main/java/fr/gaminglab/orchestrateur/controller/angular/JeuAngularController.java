@@ -18,7 +18,7 @@ import fr.gaminglab.entity.jeu.JoueurJeu;
 import fr.gaminglab.entity.jeu.Tag;
 import fr.gaminglab.orchestrateur.controller.java.JeuWebService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8186"})
 @RestController
 @RequestMapping("/gaminglab/game")
 public class JeuAngularController {

@@ -16,7 +16,7 @@ import fr.gaminglab.entity.boutique.Article;
 import fr.gaminglab.entity.boutique.CategorieArticle;
 import fr.gaminglab.orchestrateur.controller.java.CatalogueWebService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8186"})
 @RestController
 @RequestMapping("/gaminglab/boutique")
 public class CatalogueAngularController {
