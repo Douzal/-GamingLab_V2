@@ -55,7 +55,7 @@ public class ForumController {
 	@GetMapping("/categorie/{idCategorieForum}")
 	CategorieForum getCategorieForumById(@PathVariable Integer idCategorieForum) {
 
-		return null;
+		return serviceForum.getCategorieForumById(idCategorieForum).get();
 	}
 
 	@GetMapping("/categorie/{idCategorieForum}/sujet")
